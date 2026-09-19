@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {Check, Layers, Building2, ArrowRight, Box, Boxes} from "lucide-react";
+import {Check, ArrowRight, Box, Boxes} from "lucide-react";
 
 type ModelType = "centralized" | "decentralized" | null;
 

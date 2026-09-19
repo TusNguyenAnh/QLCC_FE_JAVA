@@ -26,10 +26,10 @@ import { getBdIdByOrgIdAPI } from "@/apis/orgAPI.ts";
 
 // Định nghĩa schema Zod
 const schema = z.object({
-  org_code: z.string().min(1, "Mã đơn vị không được để trống"),
-  org_name: z.string().min(1, "Tên đơn vị không được để trống"),
+  orgCode: z.string().min(1, "Mã đơn vị không được để trống"),
+  orgName: z.string().min(1, "Tên đơn vị không được để trống"),
   description: z.string().optional(),
-  parent_org_id: z.string().optional(),
+  parentOrgId: z.string().optional(),
   building: z.array(z.string()).optional(),
 });
 
@@ -65,10 +65,10 @@ export default function OrgForm({
   } = useForm<OrgFormSchema>({
     resolver: zodResolver(schema),
     defaultValues: {
-      org_code: formData?.org_code || "",
-      org_name: formData?.org_name || "",
+      orgCode: formData?.orgCode || "",
+      orgName: formData?.orgName || "",
       description: formData?.description || "",
-      parent_org_id: formData?.parent_org_id || "",
+      parentOrgId: formData?.parentOrgId || "",
       building: [] as string[],
     },
   });
@@ -79,23 +79,23 @@ export default function OrgForm({
   useEffect(() => {
     if (formData) {
       reset({
-        org_code: formData.org_code || "",
-        org_name: formData.org_name || "",
+        orgCode: formData.orgCode || "",
+        orgName: formData.orgName || "",
         description: formData.description || "",
-        parent_org_id: formData.parent_org_id || "",
+        parentOrgId: formData.parentOrgId || "",
         building: formData.building || [],
       });
 
-      // Chỉ gọi API khi parent_org_id có giá trị
-      if (formData.parent_org_id) {
+      // Chỉ gọi API khi parentOrgId có giá trị
+      if (formData.parentOrgId) {
         getBdIdByOrgId(
           complex,
-          formData.parent_org_id,
+          formData.parentOrgId,
           itemsAllBd,
           formData.building
         );
       } else {
-        // Reset danh sách tòa nhà khi không có parent_org_id (trường hợp CREATE)
+        // Reset danh sách tòa nhà khi không có parentOrgId (trường hợp CREATE)
         setItemsBd([]);
       }
     }
@@ -105,10 +105,10 @@ export default function OrgForm({
   useEffect(() => {
     if (!open) {
       reset({
-        org_code: "",
-        org_name: "",
+        orgCode: "",
+        orgName: "",
         description: "",
-        parent_org_id: "",
+        parentOrgId: "",
         building: [],
       });
       setItemsBd([]);
@@ -122,7 +122,7 @@ export default function OrgForm({
     buildingManaged: any
   ) => {
     try {
-      const data = await getBdIdByOrgIdAPI(complex, parentId);
+      const data = await getBdIdByOrgIdAPI(parentId);
       // neu tao moi thi building la cac toa nha chua dc quan ly con sua thi them cac toa nha da quan ly cua org hien tai
       const building = data.concat(buildingManaged);
       const buildingNotManaged = allBd.filter((item) =>
@@ -168,32 +168,32 @@ export default function OrgForm({
             <div className="grid gap-4">
               {/* Mã đơn vị */}
               <div className="grid gap-3">
-                <Label htmlFor="org_code">Mã đơn vị</Label>
+                <Label htmlFor="orgCode">Mã đơn vị</Label>
                 <Input
-                  id="org_code"
-                  {...register("org_code", {
+                  id="orgCode"
+                  {...register("orgCode", {
                     setValueAs: (value) => value?.trim(),
                   })}
                 />
-                {errors.org_code && (
+                {errors.orgCode && (
                   <p className="text-sm text-red-500">
-                    {errors.org_code.message}
+                    {errors.orgCode.message}
                   </p>
                 )}
               </div>
 
               {/* Tên đơn vị */}
               <div className="grid gap-3">
-                <Label htmlFor="org_name">Tên đơn vị</Label>
+                <Label htmlFor="orgName">Tên đơn vị</Label>
                 <Input
-                  id="org_name"
-                  {...register("org_name", {
+                  id="orgName"
+                  {...register("orgName", {
                     setValueAs: (value) => value?.trim(),
                   })}
                 />
-                {errors.org_name && (
+                {errors.orgName && (
                   <p className="text-sm text-red-500">
-                    {errors.org_name.message}
+                    {errors.orgName.message}
                   </p>
                 )}
               </div>
@@ -211,10 +211,10 @@ export default function OrgForm({
 
               {/* Combobox - Đơn vị cha */}
               <div className="grid gap-3">
-                <Label htmlFor="parent_org_id">Thuộc</Label>
+                <Label htmlFor="parentOrgId">Thuộc</Label>
                 <Controller
                   control={control}
-                  name="parent_org_id"
+                  name="parentOrgId"
                   render={({ field }) => (
                     <Combobox
                       items={itemsOrg}
@@ -234,7 +234,7 @@ export default function OrgForm({
                         }
                       }}
                       itemUpdate={
-                        action === "UPDATE" ? formData.parent_org_id : ""
+                        action === "UPDATE" ? formData.parentOrgId : ""
                       }
                     />
                   )}
@@ -276,7 +276,7 @@ export default function OrgForm({
                               htmlFor={itemBd.id}
                               className="flex-1 cursor-pointer py-2"
                             >
-                              {itemBd.building_name}
+                              {itemBd.buildingName}
                             </Label>
                           </div>
                         );

@@ -13,9 +13,9 @@ import {Combobox} from "@/components/ui/combobox.tsx";
 import {FilterX} from "lucide-react";
 
 const schema = z.object({
-    building_id: z.string().optional(),
+    buildingId: z.string().optional(),
     floor: z.string().optional(),
-    apt_number: z.string().optional(),
+    aptNumber: z.string().optional(),
 });
 
 export type FilterResUserFormSchema = z.infer<typeof schema>;
@@ -36,9 +36,9 @@ export default function FilterUserResForm({onSubmit}: ComponentProps) {
     } = useForm<FilterResUserFormSchema>({
         resolver: zodResolver(schema),
         defaultValues: {
-            building_id: "",
+            buildingId: "",
             floor: "0",
-            apt_number: "",
+            aptNumber: "",
         },
     });
 
@@ -46,9 +46,9 @@ export default function FilterUserResForm({onSubmit}: ComponentProps) {
         { value: string; label: string }[]
     >([]);
     const [floors, setFloors] = useState<{ value: string; label: string }[]>([]);
-    const building_id = watch("building_id");
+    const buildingId = watch("buildingId");
     const floor = watch("floor");
-    const apt_number = watch("apt_number");
+    const aptNumber = watch("aptNumber");
 
     const {complex, orgManage} = useContext(AuthContext);
 
@@ -69,7 +69,7 @@ export default function FilterUserResForm({onSubmit}: ComponentProps) {
             const items = data.map(function (item: bdItemCheckbox) {
                 return {
                     value: item.id,
-                    label: item.building_name,
+                    label: item.buildingName,
                 };
             });
             setBuildings(items);
@@ -78,7 +78,7 @@ export default function FilterUserResForm({onSubmit}: ComponentProps) {
         }
     };
 
-    const hasFilters = building_id || floor || apt_number;
+    const hasFilters = buildingId || floor || aptNumber;
 
     return (
         <form
@@ -94,14 +94,14 @@ export default function FilterUserResForm({onSubmit}: ComponentProps) {
                 {/* Building Filter */}
                 <div className="flex-1 min-w-[200px]">
                     <Label
-                        htmlFor="building_id"
+                        htmlFor="buildingId"
                         className="text-sm font-medium text-gray-700 mb-1.5 block"
                     >
                         Tòa nhà
                     </Label>
                     <Controller
                         control={control}
-                        name="building_id"
+                        name="buildingId"
                         render={({field}) => (
                             <Combobox
                                 items={buildings}
@@ -131,12 +131,12 @@ export default function FilterUserResForm({onSubmit}: ComponentProps) {
                 {/* Apartment Number Filter */}
                 <div className="flex-1 min-w-[180px]">
                     <Label
-                        htmlFor="apt_number"
+                        htmlFor="aptNumber"
                         className="text-sm font-medium text-gray-700 mb-1.5 block"
                     >
                         Số căn hộ
                     </Label>
-                    <Input id="apt_number" {...register("apt_number", {
+                    <Input id="aptNumber" {...register("aptNumber", {
                         setValueAs: (v) => (v == 0 ? "" : v)
                     })}
                     />
@@ -149,8 +149,8 @@ export default function FilterUserResForm({onSubmit}: ComponentProps) {
                         type="button"
                         size="default"
                         onClick={() => {
-                            setValue("building_id", "");
-                            setValue("apt_number", "");
+                            setValue("buildingId", "");
+                            setValue("aptNumber", "");
                             setValue("floor", "0");
                         }}
                         className="gap-2"

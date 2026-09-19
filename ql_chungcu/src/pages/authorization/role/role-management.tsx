@@ -6,7 +6,7 @@ import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {Plus, Trash2, Edit2, Users, Lock, UserPlus} from "lucide-react"
 import type {RoleItem} from "@/types/Role.ts";
-import {createRoleAPI, getAllRoleAPI} from "@/apis/roleAPI.ts";
+import {countPermissionByRoleAPI, countUserByRoleAPI, createRoleAPI, getAllRoleAPI} from "@/apis/roleAPI.ts";
 import {AuthContext} from "@/context/AuthContext.tsx";
 import {useDebounce} from "use-debounce";
 import RoleForm, {type RoleFormSchema} from "@/pages/authorization/role/action-form-role.tsx";
@@ -52,7 +52,21 @@ export function RoleManagement() {
         setLoading(true);
         try {
             const data = await getAllRoleAPI(complexId)
-            setRoles(data)
+            const countUserByRole: Record<string, number> = await countUserByRoleAPI();
+
+            const result = data.map(role => ({
+                id: role.id,
+                roleName: role.roleName,
+                description: role.description,
+                complexId: role.complexId,
+                permission: role.rolePermission.flatMap(
+                    item => item.permissionDataMapper[0].id
+                ),
+                totalUser: countUserByRole[role.id] || 0,
+                totalPermission: role.rolePermission.length || 0,
+            }));
+            console.log(result)
+            setRoles(result)
         } catch (err) {
             console.log(err);
         } finally {
@@ -63,7 +77,7 @@ export function RoleManagement() {
     const filteredRole = (debouncedKeyword: string, roles: RoleItem[]) => {
         return roles.filter(
             (role) =>
-                role.role_name.toLowerCase().includes(debouncedKeyword.toLowerCase()) ||
+                role.roleName.toLowerCase().includes(debouncedKeyword.toLowerCase()) ||
                 role.description.toLowerCase().includes(debouncedKeyword.toLowerCase()))
     }
 
@@ -71,12 +85,11 @@ export function RoleManagement() {
         try {
             const data = await getAllPermissionAPI()
             const transformed: psModule[] = Object.entries(data).map(([key, value]) => ({
-                module_name: key,
+                moduleName: key,
                 permission: (value as psItem[]).map(({id, description}) => ({id, description})),
             }));
-            console.log(transformed);
-
             setPermissions(transformed)
+            console.log(transformed)
         } catch (err) {
             console.log(err);
         }
@@ -101,7 +114,7 @@ export function RoleManagement() {
 
     const handleAssignPermission = (roleUpdate: RoleItem) => {
         setRoleId(roleUpdate.id)
-        setRoleName(roleUpdate.role_name)
+        setRoleName(roleUpdate.roleName)
         setPermissionOfRole(roleUpdate.permission)
         setOpenDialogPermission(true)
     }
@@ -169,8 +182,8 @@ export function RoleManagement() {
                     </RoleForm>
 
                     <AssignPermissionForm
-                        role_id={roleId}
-                        role_name={roleName}
+                        roleId={roleId}
+                        roleName={roleName}
                         permissionOfRole={permissionOfRole}
                         itemsPermission={permissions}
                         onSubmit={assignPermission}
@@ -202,7 +215,7 @@ export function RoleManagement() {
                                     {/* Role Details */}
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2">
-                                            <h3 className="font-semibold text-foreground">{role.role_name}</h3>
+                                            <h3 className="font-semibold text-foreground">{role.roleName}</h3>
                                         </div>
                                         <p className="mt-1 truncate text-sm text-muted-foreground">{role.description}</p>
                                     </div>
@@ -212,11 +225,11 @@ export function RoleManagement() {
                                 <div className="hidden flex-shrink-0 gap-6 md:flex">
                                     <div className="text-center">
                                         <p className="text-xs text-muted-foreground">Quyền hạn</p>
-                                        <p className="text-lg font-semibold text-foreground">{role.total_permission}</p>
+                                        <p className="text-lg font-semibold text-foreground">{role.totalPermission}</p>
                                     </div>
                                     <div className="text-center">
                                         <p className="text-xs text-muted-foreground">Người dùng</p>
-                                        <p className="text-lg font-semibold text-foreground">{role.total_user}</p>
+                                        <p className="text-lg font-semibold text-foreground">{role.totalUser}</p>
                                     </div>
                                 </div>
 
@@ -261,12 +274,12 @@ export function RoleManagement() {
                                 <div className="flex items-center gap-2">
                                     <Lock className="h-4 w-4 text-muted-foreground"/>
                                     <span
-                                        className="text-sm text-muted-foreground">{role.total_permission} quyền</span>
+                                        className="text-sm text-muted-foreground">{role.totalPermission} quyền</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Users className="h-4 w-4 text-muted-foreground"/>
                                     <span
-                                        className="text-sm text-muted-foreground">{role.total_user} người</span>
+                                        className="text-sm text-muted-foreground">{role.totalUser} người</span>
                                 </div>
                             </div>
                         </div>

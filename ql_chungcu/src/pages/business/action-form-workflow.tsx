@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Combobox } from "@/components/ui/combobox.tsx";
 import { Loader2, Plus, Trash2, X, ChevronsUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
@@ -39,20 +38,19 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet.tsx";
 import type { fillItemWf } from "@/types/Workflow.ts";
-import { Switch } from "@/components/ui/switch.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { AuthContext } from "@/context/AuthContext.tsx";
 
 // Định nghĩa schema Zod
 const schema = z.object({
-  workflow_name: z.string().min(1, "Tên quy trình không được để trống"),
+  workflowName: z.string().min(1, "Tên quy trình không được để trống"),
   description: z.string().optional(),
   status: z.number().optional(),
-  workflow_step: z
+  workflowSteps: z
     .array(
       z.object({
-        org_level: z.number().optional(),
-        step_order: z.number().optional(),
+        orgLevel: z.number().optional(),
+        stepOrder: z.number().optional(),
         description: z.string().optional(),
         status: z.number().optional(),
         position: z.array(z.string()),
@@ -94,21 +92,21 @@ export default function WorkflowForm({
   } = useForm<WorkflowFormSchema>({
     resolver: zodResolver(schema),
     defaultValues: {
-      workflow_name: formData?.workflow_name || "",
+      workflowName: formData?.workflowName || "",
       description: formData?.description || "",
       status: formData?.status || 0,
-      workflow_step: formData?.workflow_step?.length
-        ? formData.workflow_step.map((step) => ({
-            org_level: step.org_level || itemsOrg[0]?.value || 1,
-            step_order: step.step_order || 1,
+      workflowSteps: formData?.workflowSteps?.length
+        ? formData.workflowSteps.map((step) => ({
+            orgLevel: step.orgLevel || itemsOrg[0]?.value || 1,
+            stepOrder: step.stepOrder || 1,
             description: step.description || "",
             status: step.status || 0,
-            position: step.position || [],
+            position: step.workflowStepApprovers || [],
           }))
         : [
             {
-              org_level: itemsOrg[0]?.value || 1,
-              step_order: 1,
+              orgLevel: itemsOrg[0]?.value || 1,
+              stepOrder: 1,
               description: "",
               status: 0,
               position: [],
@@ -121,21 +119,21 @@ export default function WorkflowForm({
 
   useEffect(() => {
     reset({
-      workflow_name: formData?.workflow_name || "",
+      workflowName: formData?.workflowName || "",
       description: formData?.description || "",
       status: formData?.status || 0,
-      workflow_step: formData?.workflow_step?.length
-        ? formData.workflow_step.map((step) => ({
-            org_level: step.org_level || itemsOrg[0]?.value || 1,
-            step_order: step.step_order || 1,
+      workflowSteps: formData?.workflowSteps?.length
+        ? formData.workflowSteps.map((step) => ({
+            orgLevel: step.orgLevel || itemsOrg[0]?.value || 1,
+            stepOrder: step.stepOrder || 1,
             description: step.description || "",
             status: step.status || 0,
-            position: step.position || [],
+            position: step.workflowStepApprovers || [],
           }))
         : [
             {
-              org_level: itemsOrg[0]?.value || 1,
-              step_order: 1,
+              orgLevel: itemsOrg[0]?.value || 1,
+              stepOrder: 1,
               description: "",
               status: 0,
               position: [],
@@ -146,13 +144,13 @@ export default function WorkflowForm({
 
   const { fields, append, remove, replace } = useFieldArray({
     control,
-    name: "workflow_step",
+    name: "workflowSteps",
   });
 
   const onAdd = () => {
     append({
-      org_level: itemsOrg[0]?.value || 1,
-      step_order: fields.length + 1,
+      orgLevel: itemsOrg[0]?.value || 1,
+      stepOrder: fields.length + 1,
       description: "",
       status: 0,
       position: [],
@@ -162,11 +160,11 @@ export default function WorkflowForm({
 
   const onRemove = (index: number) => {
     remove(index);
-    // reset step_order sau remove:
-    console.log(getValues("workflow_step"));
-    const newArr = (getValues("workflow_step") ?? []).map((s, i) => ({
+    // reset stepOrder sau remove:
+    console.log(getValues("workflowSteps"));
+    const newArr = (getValues("workflowSteps") ?? []).map((s, i) => ({
       ...s,
-      step_order: i + 1,
+      stepOrder: i + 1,
     }));
     console.log(newArr);
     replace(newArr);
@@ -208,16 +206,16 @@ export default function WorkflowForm({
           <div className="grid auto-rows-min px-4 h-[75vh] overflow-y-auto">
             <div className="grid gap-4">
               <div className="grid gap-3">
-                <Label htmlFor="workflow_name">Tên quy trình</Label>
+                <Label htmlFor="workflowName">Tên quy trình</Label>
                 <Input
-                  id="workflow_name"
-                  {...register("workflow_name", {
+                  id="workflowName"
+                  {...register("workflowName", {
                     setValueAs: (value) => value?.trim(),
                   })}
                 />
-                {errors.workflow_name && (
+                {errors.workflowName && (
                   <p className="text-sm text-red-500">
-                    {errors.workflow_name.message}
+                    {errors.workflowName.message}
                   </p>
                 )}
               </div>
@@ -265,7 +263,7 @@ export default function WorkflowForm({
                     <Label className="mb-2">Cấp ban xét duyệt</Label>
                     <Controller
                       control={control}
-                      name={`workflow_step.${index}.org_level`}
+                      name={`workflowSteps.${index}.orgLevel`}
                       render={({ field }) => (
                         <Select
                           onValueChange={(value) =>
@@ -294,7 +292,7 @@ export default function WorkflowForm({
                     <Label className="my-2">Vị trí</Label>
                     <Controller
                       control={control}
-                      name={`workflow_step.${index}.position`}
+                      name={`workflowSteps.${index}.position`}
                       render={({ field }) => {
                         const selectedPositions = field.value || [];
                         return (
@@ -389,7 +387,7 @@ export default function WorkflowForm({
                   <div className="mt-4">
                     <Label className="mb-2">Mô tả</Label>
                     <Textarea
-                      {...register(`workflow_step.${index}.description`, {
+                      {...register(`workflowSteps.${index}.description`, {
                         setValueAs: (value) => value?.trim(),
                       })}
                       defaultValue={field.description}

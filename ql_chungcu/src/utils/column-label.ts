@@ -1,50 +1,59 @@
 // anh xa id sang ten cu the
 export const columnLabelsOrg: Record<string, string> = {
-    org_code: "Mã đơn vị",
-    org_name: "Tên đơn vị",
+    orgCode: "Mã đơn vị",
+    orgName: "Tên đơn vị",
     description: "Mô tả",
-    building: "Quản trị tòa",
-}
+    buildingIds: "Quản trị tòa",
+};
 
 export const columnLabelsBd: Record<string, string> = {
-    building_name: "Tên tòa nhà",
-    address: "Địa chỉ",
-}
+    buildingName: "Tên tòa nhà",
+};
 
 export const columnLabelsTt: Record<string, string> = {
-    type_name: "Loại yêu cầu",
+    typeName: "Loại yêu cầu",
     priority: "Mức độ ưu tiên",
     description: "Mô tả",
-}
+};
 
 export const columnLabelsApt: Record<string, string> = {
-    apt_number: "Số căn hộ",
-    gross_area: "Diện tích tim tường",
-    carpet_area: "Diện tích thông thủy",
-    apt_type: "Loại căn hộ",
+    aptNumber: "Số căn hộ",
+    grossArea: "Diện tích tim tường",
+    carpetArea: "Diện tích thông thủy",
+    aptType: "Loại căn hộ",
     description: "Mô tả",
     floor: "Tầng",
-}
+};
 
 export const columnLabelsRes: Record<string, string> = {
-    relationship:"Quan hệ",
+    relationship: "Quan hệ",
     cccd: "Số căn cước",
     fullname: "Cư dân",
     email: "Email",
-    phone_number: "Số điện thoại",
+    phoneNumber: "Số điện thoại",
     birthday: "Ngày sinh",
     gender: "Giới tính",
-}
+};
 
 export const columnLabelsMem: Record<string, string> = {
     fullname: "Người dùng",
     email: "Email",
-    phone_number: "Số điện thoại",
-    status: "Trạng thái"
-}
+    phoneNumber: "Số điện thoại",
+    status: "Trạng thái",
+};
 
 export const columnLabelsPerm: Record<string, string> = {
     name: "Quyền hạn",
     module: "Danh mục",
-    total_roles: "Vai trò",
-}
+    totalRoles: "Vai trò",
+};
+
+export const columnLabelsDeposit: Record<string, string> = {
+    bankName: "Tên ngân hàng",
+    accountContract: "Số hợp đồng",
+    term: "Kỳ hạn",
+    depositDate: "Ngày gửi",
+    maturityDate: "Ngày đáo hạn",
+    rate: "Lãi suất",
+    amount: "Số tiền",
+};

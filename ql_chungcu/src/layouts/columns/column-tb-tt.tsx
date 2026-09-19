@@ -53,13 +53,13 @@ export const ColumnsTt = ({handleUpdate, handleDelete}: ComponentProps): ColumnD
     },
 
     {
-        accessorKey: 'type_name',
+        accessorKey: 'typename',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Loại yêu cầu"/>
         ),
 
         cell: ({row}) => (
-            <div>{row.getValue('type_name')}</div>
+            <div>{row.getValue('typename')}</div>
         ),
     },
 
@@ -70,7 +70,7 @@ export const ColumnsTt = ({handleUpdate, handleDelete}: ComponentProps): ColumnD
         ),
         cell: ({getValue}) => {
             const priority = getValue() as TaskType["priority"];
-            return priority?.priority_name ?? "—";
+            return priority?.priorityName ?? "—";
         },
     },
 

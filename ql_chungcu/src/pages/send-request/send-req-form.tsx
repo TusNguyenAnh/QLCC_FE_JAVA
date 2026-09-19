@@ -20,10 +20,10 @@ import {Combobox} from "@/components/ui/combobox.tsx";
 
 // Định nghĩa schema Zod
 const schema = z.object({
-    task_name: z.string().min(1, "Tên khoản chi không được để trống"),
+    taskName: z.string().min(1, "Tên khoản chi không được để trống"),
     description: z.string().optional(),
-    tasktype_id: z.string().optional(),
-    building_id: z.array(z.string()).optional(),
+    tasktypeId: z.string().optional(),
+    buildingId: z.array(z.string()).optional(),
     files: z.any().optional(),
 });
 
@@ -56,20 +56,20 @@ export default function SendReqForm({
     } = useForm<ReqFormSchema>({
         resolver: zodResolver(schema),
         defaultValues: {
-            task_name: "",
+            taskName: "",
             description: "",
-            tasktype_id: "",
-            building_id: [],
+            tasktypeId: "",
+            buildingId: [],
             files: undefined,
         },
     });
 
     useEffect(() => {
         reset({
-            task_name: "",
+            taskName: "",
             description: "",
-            tasktype_id: "",
-            building_id: [],
+            tasktypeId: "",
+            buildingId: [],
             files: undefined,
         });
     }, [reset]);
@@ -102,16 +102,16 @@ export default function SendReqForm({
                     <div className="grid auto-rows-min px-4 h-[70vh] overflow-y-auto">
                         <div className="grid gap-4">
                             <div className="grid gap-3">
-                                <Label htmlFor="task_name">Tên yêu cầu, phản ánh</Label>
+                                <Label htmlFor="taskName">Tên yêu cầu, phản ánh</Label>
                                 <Input
-                                    id="task_name"
-                                    {...register("task_name", {
+                                    id="taskName"
+                                    {...register("taskName", {
                                         setValueAs: (value) => value?.trim(),
                                     })}
                                 />
-                                {errors.task_name && (
+                                {errors.taskName && (
                                     <p className="text-sm text-red-500">
-                                        {errors.task_name.message}
+                                        {errors.taskName.message}
                                     </p>
                                 )}
                             </div>
@@ -132,10 +132,10 @@ export default function SendReqForm({
                             </div>
 
                             <div className="grid gap-3">
-                                <Label htmlFor="building_id">Tòa nhà</Label>
+                                <Label htmlFor="buildingId">Tòa nhà</Label>
                                 <Controller
                                     control={control}
-                                    name="building_id"
+                                    name="buildingId"
                                     render={({field}) => (
                                         <Combobox
                                             items={itemsBd}
@@ -149,10 +149,10 @@ export default function SendReqForm({
                             </div>
 
                             <div className="grid gap-3">
-                                <Label htmlFor="tasktype_id">Loại yều cầu, phản ánh</Label>
+                                <Label htmlFor="tasktypeId">Loại yều cầu, phản ánh</Label>
                                 <Controller
                                     control={control}
-                                    name="tasktype_id"
+                                    name="tasktypeId"
                                     render={({field}) => (
                                         <Combobox
                                             items={itemsTt}

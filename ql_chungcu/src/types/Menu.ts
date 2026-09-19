@@ -8,7 +8,7 @@ import {
     LogOut, type LucideIcon,
     Network, Send,
     Settings, Shield, UserCog,
-    UserRoundCog, Users,
+    UserRoundCog, Users, Wallet,
     Workflow,
 } from "lucide-react";
 
@@ -129,6 +129,14 @@ export const menuItems: MenuItem[] = [
                 title: "Quản lý chi",
                 url: "/page/finance/expense",
                 icon: BanknoteArrowDown,
+                child: [],
+                permissions: ['view:expense'],
+            },
+            {
+                id: 23,
+                title: "Quản lý tài khoản tiền gửi",
+                url: "/page/finance/deposit",
+                icon: Wallet,
                 child: [],
                 permissions: ['view:expense'],
             }

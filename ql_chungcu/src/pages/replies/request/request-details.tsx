@@ -58,7 +58,7 @@ export function RequestDetails({
                     <DialogHeader>
                         <div>
                             <h2 className="text-xl font-bold text-foreground mb-2">
-                                {request.task_name}
+                                {request.taskName}
                             </h2>
                             <p className="text-sm text-muted-foreground">
                                 Mã yêu cầu: {request.id}
@@ -71,19 +71,19 @@ export function RequestDetails({
                             <div className="flex items-center gap-2">
                                 <Badge
                                     variant="outline"
-                                    className={PRIORITY_COLORS[request.priority_name]}
+                                    className={PRIORITY_COLORS[request.priorityName]}
                                 >
-                                    {request.priority_name}
+                                    {request.priorityName}
                                 </Badge>
                                 {request.status == STATUS["P"] ? (
                                     <Badge variant="secondary">
                                         Xét duyệt cấp {request.level}
                                     </Badge>
                                 ) : null}
-                                <Badge variant="outline">{request.type_name}</Badge>
+                                <Badge variant="outline">{request.typeName}</Badge>
                                 {workflow && (
                                     <Badge variant="outline" className="text-xs">
-                                        {workflow[0].workflow_name}
+                                        {workflow[0].workflowName}
                                     </Badge>
                                 )}
                             </div>
@@ -109,7 +109,7 @@ export function RequestDetails({
                                     <div>
                                         <p className="text-sm text-muted-foreground">Toà nhà</p>
                                         <p className="font-medium">
-                                            {request.building_name}
+                                            {request.buildingName}
                                         </p>
                                     </div>
                                 </div>
@@ -120,7 +120,7 @@ export function RequestDetails({
                                             Thời gian gửi
                                         </p>
                                         <p className="font-medium">
-                                            {formatDate(request.created_at)}
+                                            {formatDate(request.createdAt)}
                                         </p>
                                     </div>
                                 </div>
@@ -151,7 +151,7 @@ export function RequestDetails({
                                 <p className="text-sm text-muted-foreground">
                                     {
                                         workflow.find((item) => item.level == request.level)
-                                            ?.workflow_name
+                                            ?.workflowName
                                     }
                                 </p>
                             )}
@@ -201,10 +201,10 @@ export function RequestDetails({
                                                 </TooltipTrigger>
                                                 <TooltipContent>
                                                     <div className="text-sm font-medium">
-                                                        {level.level == -1 ? "Gửi yêu cầu" : level.org_name}
+                                                        {level.level == -1 ? "Gửi yêu cầu" : level.orgName}
                                                     </div>
                                                     <div className="text-xs text-muted-foreground">
-                                                        {level.role_name}
+                                                        {level.roleName}
                                                     </div>
                                                     <div className="text-xs text-muted-foreground">
                                                         {level.fullname}

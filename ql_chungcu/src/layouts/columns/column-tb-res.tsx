@@ -89,12 +89,12 @@ export const ColumnsRes = ({cusItem}: ComponentProps): ColumnDef<Resident>[] => 
     },
 
     {
-        accessorKey: 'phone_number',
+        accessorKey: 'phoneNumber',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Số điện thoại"/>
         ),
         cell: ({row}) => (
-            <div>{row.getValue('phone_number')}</div>
+            <div>{row.getValue('phoneNumber')}</div>
         ),
     },
 

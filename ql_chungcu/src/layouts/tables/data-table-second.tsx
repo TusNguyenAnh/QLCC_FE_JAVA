@@ -58,14 +58,14 @@ function filterRowsRecursively<T extends Org>(
 
     return rows
         .map((row) => {
-            const filteredSubRows = row.child
-                ? filterRowsRecursively(row.child, globalFilter)
+            const filteredSubRows = row.children
+                ? filterRowsRecursively(row.children, globalFilter)
                 : [];
 
             const matchCurrent =
-                (row.org_code && typeof row.org_code === 'string' ? row.org_code.toLowerCase().includes(lowerFilter) : false) ||
-                (row.description && typeof row.description === 'string' ? row.description.toLowerCase().includes(lowerFilter) : false) ||
-                (row.org_name && typeof row.org_name === 'string' ? row.org_name.toLowerCase().includes(lowerFilter) : false);
+                (row.orgCode ? row.orgCode.toLowerCase().includes(lowerFilter) : false) ||
+                (row.description ? row.description.toLowerCase().includes(lowerFilter) : false) ||
+                (row.orgName ? row.orgName.toLowerCase().includes(lowerFilter) : false);
 
             // Nếu chính row khớp → giữ lại (và chỉ giữ child khớp, không giữ toàn bộ)
             // Nếu row không khớp nhưng child có khớp → vẫn giữ row để có thể expand
@@ -82,7 +82,7 @@ function filterRowsRecursively<T extends Org>(
 }
 
 
-export function DataTableSecond<TData extends Org & { child?: TData[] | undefined; }, TValue>
+export function DataTableSecond<TData extends Org & { children?: TData[] | undefined; }, TValue>
 (
     {
         columns,
@@ -113,7 +113,7 @@ export function DataTableSecond<TData extends Org & { child?: TData[] | undefine
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getSubRows: (row: TData) => {
-            return row.child || []
+            return row.children || []
         },
         onSortingChange: setSorting,
         onRowSelectionChange: setRowSelection,

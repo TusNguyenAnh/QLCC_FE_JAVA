@@ -60,18 +60,18 @@ export const ColumnsOrg = ({
     },
 
     {
-        accessorKey: 'org_code',
+        accessorKey: 'orgCode',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Mã đơn vị"/>
         ),
 
         cell: ({row}) => (
-            <div>{row.getValue('org_code')}</div>
+            <div>{row.getValue('orgCode')}</div>
         ),
     },
 
     {
-        accessorKey: 'org_name',
+        accessorKey: 'orgName',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Tên đơn vị"/>
         ),
@@ -89,13 +89,13 @@ export const ColumnsOrg = ({
                             )}
                         >
                         </SquareMinus>
-                        {row.getValue('org_name')}
+                        {row.getValue('orgName')}
                     </div>
                 ) :
                 (
                     <div
                         style={{paddingLeft: row.depth > 0 ? `${row.depth * 40}px` : ""}}>
-                        {row.getValue('org_name')}
+                        {row.getValue('orgName')}
                     </div>
                 )
         ),
@@ -113,13 +113,13 @@ export const ColumnsOrg = ({
 
 
     {
-        accessorKey: 'building',
+        accessorKey: 'buildingIds',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Quản trị tòa"/>
         ),
         cell: ({row}) => (
-            <div>{(row.getValue('building') as string[])
-                .map(bdId => itemsBd.find(b => b.id === bdId)?.building_name)
+            <div>{(row.getValue('buildingIds') as string[])
+                .map(bdId => itemsBd.find(b => b.id === bdId)?.buildingName)
                 .filter(Boolean)
                 .join(', ')
             }</div>
@@ -144,7 +144,7 @@ export const ColumnsOrg = ({
                         <DropdownMenuLabel>Chức năng</DropdownMenuLabel>
                         <DropdownMenuSeparator/>
                         <DropdownMenuItem
-                            onClick={() => handleAddMember(orgItemUpdate.id, orgItemUpdate.building)} // Thêm thành viên: lay key la cac id cua toa nha
+                            onClick={() => handleAddMember(orgItemUpdate.id, orgItemUpdate.buildingIds)} // Thêm thành viên: lay key la cac id cua toa nha
                         >
                             Thành viên
                         </DropdownMenuItem>

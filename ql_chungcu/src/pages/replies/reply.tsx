@@ -42,10 +42,10 @@ function Reply() {
 
   // Pagination states for pending requests
   const [pendingMeta, setPendingMeta] = useState<PaginationMeta>({
-    current_page: 1,
-    last_page: 1,
-    per_page: 50,
-    total: 0,
+    page: 0,
+    totalPages: 1,
+    size: 50,
+    totalElements: 0,
   });
   const [pendingPage, setPendingPage] = useState(1);
   const [pendingPerPage, setPendingPerPage] = useState(50);
@@ -53,10 +53,10 @@ function Reply() {
 
   // Pagination states for rejected requests
   const [rejectedMeta, setRejectedMeta] = useState<PaginationMeta>({
-    current_page: 1,
-    last_page: 1,
-    per_page: 50,
-    total: 0,
+    page: 0,
+    totalPages: 1,
+    size: 50,
+    totalElements: 0,
   });
   const [rejectedPage, setRejectedPage] = useState(1);
   const [rejectedPerPage, setRejectedPerPage] = useState(50);
@@ -64,10 +64,10 @@ function Reply() {
 
   // Pagination states for approved requests
   const [approvedMeta, setApprovedMeta] = useState<PaginationMeta>({
-    current_page: 1,
-    last_page: 1,
-    per_page: 50,
-    total: 0,
+    page: 0,
+    totalPages: 1,
+    size: 50,
+    totalElements: 0,
   });
   const [approvedPage, setApprovedPage] = useState(1);
   const [approvedPerPage, setApprovedPerPage] = useState(50);
@@ -113,23 +113,23 @@ function Reply() {
         // Chỉ cập nhật tổng số khi có yêu cầu mới hoặc click tab tổng quan
         // KHÔNG cập nhật khi filter vì filter không phản ánh tổng số thực tế
         if (updateTotalCount) {
-          setLengthTaskPending(response.data.total);
+          setLengthTaskPending(response.totalElements);
         }
         setPendingMeta({
-          current_page: response.data.current_page,
-          last_page: response.data.last_page,
-          per_page: response.data.per_page,
-          total: response.data.total,
+          page: response.page,
+          totalPages: response.totalPages,
+          size: response.size,
+          totalElements: response.totalElements,
         });
-        setListTask(response.data.data);
+        setListTask(response.data);
       } else if (taskStatus === 3) {
         setRejectedMeta({
-          current_page: response.data.current_page,
-          last_page: response.data.last_page,
-          per_page: response.data.per_page,
-          total: response.data.total,
+          page: response.page,
+          totalPages: response.totalPages,
+          size: response.size,
+          totalElements: response.totalElements,
         });
-        setListTask(response.data.data);
+        setListTask(response.data);
       }
       setSelectedRequest(null);
     } catch (err) {
@@ -156,12 +156,12 @@ function Reply() {
         perPage
       );
       setApprovedMeta({
-        current_page: response.data.current_page,
-        last_page: response.data.last_page,
-        per_page: response.data.per_page,
-        total: response.data.total,
+        page: response.page,
+        totalPages: response.totalPages,
+        size: response.size,
+        totalElements: response.totalElements,
       });
-      setListTaskApproved(response.data.data);
+      setListTaskApproved(response.data);
       setSelectedRequest(null);
     } catch (err) {
       console.log(err);
@@ -360,7 +360,7 @@ function Reply() {
               loading={loading}
               type={"pd"}
             />
-            {pendingMeta && pendingMeta.total > 0 && (
+            {pendingMeta && pendingMeta.totalPages > 0 && (
               <DataPagination
                 meta={pendingMeta}
                 onPageChange={handlePendingPageChange}
@@ -393,7 +393,7 @@ function Reply() {
               loading={loading}
               type={"rj"}
             />
-            {rejectedMeta && rejectedMeta.total > 0 && (
+            {rejectedMeta && rejectedMeta.totalPages > 0 && (
               <DataPagination
                 meta={rejectedMeta}
                 onPageChange={handleRejectedPageChange}
@@ -426,7 +426,7 @@ function Reply() {
               loading={loading}
               type={"apd"}
             />
-            {approvedMeta && approvedMeta.total > 0 && (
+            {approvedMeta && approvedMeta.totalPages > 0 && (
               <DataPagination
                 meta={approvedMeta}
                 onPageChange={handleApprovedPageChange}

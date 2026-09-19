@@ -33,9 +33,10 @@ import ActionFormAdjustment, {
     type AdjustmentFormSchema,
 } from "@/pages/finance/adjustment/action-form-adjustment.tsx";
 import {createAdjustment} from "@/apis/adjustmentAPI.ts";
+import {findByIdAPI} from "@/apis/orgAPI.ts";
 
 export default function CashReport() {
-    const {financeModel} = useContext(AuthContext);
+    const {financeModel,orgManage} = useContext(AuthContext);
     const [ledgers, setLedgers] = useState<Ledger[]>([]);
     const [loading, setLoading] = useState(false);
     const [selectedLedger, setSelectedLedger] = useState<Ledger | null>(null);
@@ -48,10 +49,10 @@ export default function CashReport() {
 
     // Pagination state
     const [meta, setMeta] = useState<PaginationMeta>({
-        current_page: 1,
-        last_page: 1,
-        per_page: 10,
-        total: 0,
+        page: 0,
+        totalPages: 1,
+        size: 10,
+        totalElements: 0,
     });
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
@@ -79,14 +80,14 @@ export default function CashReport() {
             totalRevenue,
             totalExpense,
             balance,
-            totalTransactions: meta.total,
+            totalTransactions: meta.totalElements,
             todayTransactions: ledgers.filter(
                 (l) =>
                     new Date(l.transaction_date).toDateString() ===
                     new Date().toDateString()
             ).length,
         };
-    }, [ledgers, meta.total]);
+    }, [ledgers, meta.totalElements]);
 
     // Fetch ledgers function
     const fetchLedgers = async (
@@ -112,8 +113,13 @@ export default function CashReport() {
             }
 
             const response = await getLedger(filters);
-            setLedgers(response.data);
-            setMeta(response.meta);
+            setLedgers(response.result?.data || []);
+            setMeta(response.result || {
+                page: 0,
+                totalPages: 1,
+                size: pageSize,
+                totalElements: 0,
+            });
         } catch (error) {
             console.error("Error fetching ledgers:", error);
             toast.error("Không thể tải danh sách sổ quỹ tiền mặt");
@@ -127,7 +133,13 @@ export default function CashReport() {
         const loadBuildings = async () => {
             if (financeModel === "decentralized") {
                 try {
-                    const data = await getAllBdAPI();
+                    let data = await getAllBdAPI();
+                    if (orgManage) {
+                        // Lọc toà nhà theo orgManage
+                        const bdByOrg = await findByIdAPI(orgManage);
+                        data = data.filter(item => bdByOrg.building.includes(item.id));
+                    }
+
                     setBuildings(data);
                 } catch (error) {
                     console.error("Error fetching buildings:", error);
@@ -208,10 +220,10 @@ export default function CashReport() {
         setPage(1);
         setLedgers([]);
         setMeta({
-            current_page: 1,
-            last_page: 1,
-            per_page: 10,
-            total: 0,
+            page: 0,
+            totalPages: 1,
+            size: 10,
+            totalElements: 0,
         });
     };
 

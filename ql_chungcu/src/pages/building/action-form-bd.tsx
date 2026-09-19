@@ -21,8 +21,8 @@ import type {fillItemBd} from "@/types/Building.ts";
 
 // Định nghĩa schema Zod
 const schema = z.object({
-    building_name: z.string().min(1, "Tên tòa nhà không được để trống"),
-    complex_id: z.string().optional(),
+    buildingName: z.string().min(1, "Tên tòa nhà không được để trống"),
+    complexId: z.string().optional(),
 })
 
 export type BdFormSchema = z.infer<typeof schema>
@@ -45,15 +45,15 @@ export default function BdForm({open, setOpen, loading, action, formData, onSubm
     } = useForm<BdFormSchema>({
         resolver: zodResolver(schema),
         defaultValues: {
-            building_name: formData?.building_name || "",
+            buildingName: formData?.buildingName || "",
         },
     })
 
     useEffect(() => {
         if (formData) {
             reset({
-                building_name: formData?.building_name || "",
-                complex_id: formData?.complex_id || "",
+                buildingName: formData?.buildingName || "",
+                complexId: formData?.complexId || "",
             })
         }
     }, [formData, reset])
@@ -86,12 +86,11 @@ export default function BdForm({open, setOpen, loading, action, formData, onSubm
                     <div className="grid auto-rows-min px-4 h-[75vh] overflow-y-auto">
                         <div className="grid gap-4">
                             <div className="grid gap-3">
-                                <Label htmlFor="building_name">Tên tòa nhà</Label>
-                                <Input id="building_name" {...register("building_name", {
+                                <Label htmlFor="buildingName">Tên tòa nhà</Label>
+                                <Input id="buildingName" {...register("buildingName", {
                                     setValueAs: (value) => value?.trim()})} />
-                                {errors.building_name &&
-                                    <p className="text-sm text-red-500">{errors.building_name.message}</p>}
-
+                                {errors.buildingName &&
+                                    <p className="text-sm text-red-500">{errors.buildingName.message}</p>}
                             </div>
                         </div>
                     </div>

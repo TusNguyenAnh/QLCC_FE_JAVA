@@ -2,22 +2,22 @@ import request from "@/utils/request.ts";
 import type {AptFormSchema} from "@/pages/apartment/action-form-apt.tsx";
 
 export const getApartmentByBuilding = async (bdId: string) => {
-    const res = await request.get(`/apt/findByBuilding/${bdId}`);
+    const res = await request.get(`/apartments/building/${bdId}`);
     return res.data;
 }
 
 export const createAptAPI = async (newApt: AptFormSchema) => {
-    const res = await request.post('/apt/create', newApt);
+    const res = await request.post('/apartments', newApt);
     return res.data;
 }
 
 export const updateAptAPI = async (updateApt: AptFormSchema, aptId: string) => {
-    const res = await request.post(`/apt/update/${aptId}`, updateApt);
+    const res = await request.put(`/apartments/${aptId}`, updateApt);
     return res.data;
 }
 
 export const createAptUseFileAPI = async (formData: FormData) => {
-    const res = await request.post("/apt/import-excel", formData, {
+    const res = await request.post("/apartments/import-excel", formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },

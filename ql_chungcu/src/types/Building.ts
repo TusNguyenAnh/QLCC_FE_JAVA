@@ -1,19 +1,19 @@
 export type Building = {
     id: string,
-    complex_id: string,
-    building_name: string,
+    complexId: string,
+    buildingName: string,
     status?: string,
-    financial_ratio: number,
+    financialRatio: number,
 }
 
 export type fillItemBd = {
     id: string,
-    complex_id: string,
-    building_name: string,
+    complexId: string,
+    buildingName: string,
     address: string,
 }
 
 export type bdItemCheckbox = {
     id: string;
-    building_name: string;
+    buildingName: string;
 }

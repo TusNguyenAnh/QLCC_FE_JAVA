@@ -9,7 +9,6 @@ import SendReqForm, {
 } from "@/pages/send-request/send-req-form.tsx";
 import {
     createTaskAPI,
-    getAllTaskByOrgAPI,
     getTaskByCreatorAPI,
 } from "@/apis/taskAPI.ts";
 import {RequestList} from "@/pages/replies/request/request-list.tsx";
@@ -48,10 +47,10 @@ export function SendRequest() {
 
     // Pagination states for pending requests
     const [pendingMeta, setPendingMeta] = useState<PaginationMeta>({
-        current_page: 1,
-        last_page: 1,
-        per_page: 50,
-        total: 0,
+        page: 0,
+        totalPages: 1,
+        size: 50,
+        totalElements: 0,
     });
     const [pendingPage, setPendingPage] = useState(1);
     const [pendingPerPage, setPendingPerPage] = useState(50);
@@ -59,10 +58,10 @@ export function SendRequest() {
 
     // Pagination states for rejected requests
     const [rejectedMeta, setRejectedMeta] = useState<PaginationMeta>({
-        current_page: 1,
-        last_page: 1,
-        per_page: 50,
-        total: 0,
+        page: 0,
+        totalPages: 1,
+        size: 50,
+        totalElements: 0,
     });
     const [rejectedPage, setRejectedPage] = useState(1);
     const [rejectedPerPage, setRejectedPerPage] = useState(50);
@@ -70,10 +69,10 @@ export function SendRequest() {
 
     // Pagination states for approved requests
     const [approvedMeta, setApprovedMeta] = useState<PaginationMeta>({
-        current_page: 1,
-        last_page: 1,
-        per_page: 50,
-        total: 0,
+        page: 0,
+        totalPages: 1,
+        size: 50,
+        totalElements: 0,
     });
     const [approvedPage, setApprovedPage] = useState(1);
     const [approvedPerPage, setApprovedPerPage] = useState(50);
@@ -89,32 +88,37 @@ export function SendRequest() {
     ) => {
         setLoading(true);
         try {
-            const response = await getTaskByCreatorAPI(taskStatus, filterTask, page, perPage);
+            const response = await getTaskByCreatorAPI(
+                taskStatus,
+                filterTask,
+                page,
+                perPage,
+            );
 
             if (taskStatus === "PENDING") {
                 setPendingMeta({
-                    current_page: response.data.current_page,
-                    last_page: response.data.last_page,
-                    per_page: response.data.per_page,
-                    total: response.data.total,
+                    page: response.result.page,
+                    totalPages: response.result.totalPages,
+                    size: response.result.size,
+                    totalElements: response.result.totalElements,
                 });
-                setListTaskPending(response.data.data);
+                setListTaskPending(response.result.data);
             } else if (taskStatus === "REJECTED") {
                 setRejectedMeta({
-                    current_page: response.data.current_page,
-                    last_page: response.data.last_page,
-                    per_page: response.data.per_page,
-                    total: response.data.total,
+                    page: response.result.page,
+                    totalPages: response.result.totalPages,
+                    size: response.result.size,
+                    totalElements: response.result.totalElements,
                 });
-                setListTaskRejected(response.data.data);
+                setListTaskRejected(response.result.data);
             } else if (taskStatus === "APPROVED") {
                 setApprovedMeta({
-                    current_page: response.data.current_page,
-                    last_page: response.data.last_page,
-                    per_page: response.data.per_page,
-                    total: response.data.total,
+                    page: response.result.page,
+                    totalPages: response.result.totalPages,
+                    size: response.result.size,
+                    totalElements: response.result.totalElements,
                 });
-                setListTaskApproved(response.data.data);
+                setListTaskApproved(response.result.data);
             }
             setSelectedRequest(null);
         } catch (err) {
@@ -132,7 +136,7 @@ export function SendRequest() {
             let data = await getAllBdAPI();
 
             const items = data.map((item) => ({
-                label: item.building_name,
+                label: item.buildingName,
                 value: String(item.id),
             }));
 
@@ -148,11 +152,11 @@ export function SendRequest() {
             const data = await getAllTaskTypeAPI(complexId);
             const items = data.map(function (item: {
                 id: string;
-                type_name: string;
+                typeName: string;
             }) {
                 return {
                     value: item.id,
-                    label: item.type_name,
+                    label: item.typeName,
                 };
             });
             setListTt(items);
@@ -232,7 +236,7 @@ export function SendRequest() {
     };
 
     const handleApprovedFilter = (filter: FilterReqFormSchema) => {
-        console.log(filter)
+        console.log(filter);
         setApprovedFilter(filter);
         setApprovedPage(1);
         getAllTaskByCreator("APPROVED", filter, 1, approvedPerPage);
@@ -243,15 +247,15 @@ export function SendRequest() {
         try {
             // Tạo FormData để gửi files
             const formData = new FormData();
-            formData.append("task_name", data.task_name);
-            formData.append("tasktype_id", data.tasktype_id || "");
+            formData.append("task_name", data.taskName);
+            formData.append("tasktype_id", data.tasktypeId || "");
             formData.append("description", data.description || "");
             formData.append("category", "task");
 
             // Thêm building_id array
-            if (data.building_id && data.building_id.length > 0) {
-                data.building_id.forEach((id) => {
-                    formData.append("building_id[]", id);
+            if (data.buildingId && data.buildingId.length > 0) {
+                data.buildingId.forEach((id) => {
+                    formData.append("buildingId[]", id);
                 });
             }
 
@@ -261,8 +265,6 @@ export function SendRequest() {
                     formData.append("files[]", file);
                 });
             }
-
-            console.log(data);
 
             await createTaskAPI(formData);
             toast.success("Thêm mới thành công!");
@@ -339,7 +341,7 @@ export function SendRequest() {
                         loading={loading}
                         type={"pd"}
                     />
-                    {pendingMeta && pendingMeta.total > 0 && (
+                    {pendingMeta && pendingMeta.totalPages > 0 && (
                         <DataPagination
                             meta={pendingMeta}
                             onPageChange={handlePendingPageChange}
@@ -370,7 +372,7 @@ export function SendRequest() {
                         loading={loading}
                         type={"rj"}
                     />
-                    {rejectedMeta && rejectedMeta.total > 0 && (
+                    {rejectedMeta && rejectedMeta.totalPages > 0 && (
                         <DataPagination
                             meta={rejectedMeta}
                             onPageChange={handleRejectedPageChange}
@@ -399,7 +401,7 @@ export function SendRequest() {
                         loading={loading}
                         type={"apd"}
                     />
-                    {approvedMeta && approvedMeta.total > 0 && (
+                    {approvedMeta && approvedMeta.totalPages > 0 && (
                         <DataPagination
                             meta={approvedMeta}
                             onPageChange={handleApprovedPageChange}

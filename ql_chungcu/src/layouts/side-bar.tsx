@@ -92,7 +92,7 @@ export default function SidebarCus() {
                 <SidebarContent>
                     <SidebarGroup>
                         <div className="flex items-center justify-between">
-                            <SidebarGroupLabel hidden={open}>MBS-{complexInfo?.complex_name}</SidebarGroupLabel>
+                            <SidebarGroupLabel hidden={open}>MBS-{complexInfo?.complexName}</SidebarGroupLabel>
                             <SidebarTrigger
                                 className="p-4"
                                 onClick={() => setOpen((prev) => !prev)}
@@ -102,7 +102,7 @@ export default function SidebarCus() {
                             <SidebarMenu>
                                 {visibleItems.map((item) => (
                                     <Collapsible className="group/collapsible grp" key={item.id}>
-                                        <SidebarMenuItem className="mb-1.5">
+                                        <SidebarMenuItem>
                                             <CollapsibleTrigger asChild>
                                                 {item.title === "Đăng xuất" ? (
                                                     <SidebarMenuButton
@@ -125,7 +125,7 @@ export default function SidebarCus() {
                                                     </SidebarMenuButton>
                                                 ) : (
                                                     <Link to={item.url}>
-                                                        <SidebarMenuButton className="flex justify-between">
+                                                        <SidebarMenuButton className="flex justify-between h-full">
                                                             <div className={"flex items-center"}>
                                                                 <item.icon className="size-4 mr-1.5"/>
                                                                 <span
@@ -149,22 +149,22 @@ export default function SidebarCus() {
                                                     <SidebarMenuSub>
                                                         {item.child.map((itemChild) => (
                                                             <SidebarMenuSubItem
-                                                                className="mt-1"
                                                                 key={itemChild.id}
                                                             >
                                                                 <Link to={itemChild.url}>
-                                                                    <SidebarMenuButton className="flex justify-between">
+                                                                    <SidebarMenuButton
+                                                                        className="flex justify-between h-full">
                                                                         <div className="flex items-center">
                                                                             <itemChild.icon className="size-4 mr-1.5"/>
-                                                                            <span
+                                                                            <div
                                                                                 className={
                                                                                     open
                                                                                         ? "hidden"
                                                                                         : "fadeIn block opacity-1"
                                                                                 }
                                                                             >
-                                        {itemChild.title}
-                                      </span>
+                                                                                {itemChild.title}
+                                                                            </div>
                                                                         </div>
                                                                     </SidebarMenuButton>
                                                                 </Link>

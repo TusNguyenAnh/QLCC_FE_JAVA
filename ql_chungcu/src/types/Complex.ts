@@ -1,17 +1,17 @@
 export type Complex = {
     id: string;
-    complex_name: string;
+    complexName: string;
     address: string;
     description: string;
-    total_building: number;
-    total_apartment: number;
-    name_contact: string;
-    phone_contact: string;
-    email_contact: string;
-    financial_model:string;
+    totalBuilding: number;
+    totalApartment: number;
+    nameContact: string;
+    phoneContact: string;
+    emailContact: string;
+    financialModel:string;
 };
 
 export type cplItemCheckbox = {
     id: string;
-    complex_name: string;
+    complexName: string;
 }

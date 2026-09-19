@@ -1,17 +1,15 @@
 import request from "@/utils/request.ts";
 
 export const createComplexAPI = async (formData: FormData) => {
-    const res = await request.post("/complex/create", formData, {
+    return await request.post("/complex", formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
     });
-    return res;
 };
 
 export const findComplexByIdAPI = async (complexId: string) => {
-    const res = await request.get(`/complex/findById/${complexId}`);
-    return res.data;
+    return await request.get(`/complex/${complexId}`);
 }
 
 export const filterComplexAPI = async (
@@ -21,7 +19,10 @@ export const filterComplexAPI = async (
 ) => {
     // Trả về toàn bộ response với message, data, meta, links
     const res = await request.post(
-        `/complex/filterComplex/${status}?page=${page}&perPage=${perPage}`);
+        `/complex/filter/${status}`,{
+            pageNumber: page,
+            pageSize: perPage,
+        });
 
     return res.data;
 };

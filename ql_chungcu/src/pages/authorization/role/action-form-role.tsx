@@ -21,9 +21,9 @@ import type {RoleItem} from "@/types/Role.ts";
 
 // Định nghĩa schema Zod
 const schema = z.object({
-    role_name: z.string().min(1, "Tên vai trò không được để trống"),
+    roleName: z.string().min(1, "Tên vai trò không được để trống"),
     description: z.string().optional(),
-    complex_id: z.string().optional(),
+    complexId: z.string().optional(),
 })
 
 export type RoleFormSchema = z.infer<typeof schema>
@@ -46,18 +46,18 @@ export default function RoleForm({open, setOpen, loading, action, formData, onSu
     } = useForm<RoleFormSchema>({
         resolver: zodResolver(schema),
         defaultValues: {
-            role_name: formData?.role_name || "",
+            roleName: formData?.roleName || "",
             description: formData?.description || "",
-            complex_id: formData?.complex_id || "",
+            complexId: formData?.complexId || "",
         },
     })
 
     useEffect(() => {
         if (formData) {
             reset({
-                role_name: formData?.role_name || "",
+                roleName: formData?.roleName || "",
                 description: formData?.description || "",
-                complex_id: formData?.complex_id || "",
+                complexId: formData?.complexId || "",
             })
         }
     }, [formData, reset])
@@ -91,10 +91,10 @@ export default function RoleForm({open, setOpen, loading, action, formData, onSu
                         <div className="grid gap-4">
                             <div className="grid gap-3">
                                 <Label htmlFor="building_name">Tên vai trò</Label>
-                                <Input id="role_name" {...register("role_name", {
+                                <Input id="roleName" {...register("roleName", {
                                     setValueAs: (value) => value?.trim()})} />
-                                {errors.role_name &&
-                                    <p className="text-sm text-red-500">{errors.role_name.message}</p>}
+                                {errors.roleName &&
+                                    <p className="text-sm text-red-500">{errors.roleName.message}</p>}
 
                             </div>
 

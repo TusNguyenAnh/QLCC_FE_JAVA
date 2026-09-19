@@ -7,7 +7,7 @@ import {RotateCw} from "lucide-react";
 import {AuthContext} from "@/context/AuthContext.tsx";
 import {getAllOrgWithoutChildAPI} from "@/apis/orgAPI.ts";
 import type {orgWithoutChild} from "@/types/Organization.ts";
-import {findByOrgIdAPI} from "@/apis/userAPI.ts";
+import {findStaffByOrgId} from "@/apis/userAPI.ts";
 import {DataTable} from "@/layouts/tables/data-table.tsx";
 import {ColumnsUser} from "@/layouts/columns/column-tb-user.tsx";
 import type {Member} from "@/types/User.ts";
@@ -70,7 +70,7 @@ function UserStaffManagement() {
         setLoading(true);
         try {
             setOrgSelected(orgId);
-            const data = await findByOrgIdAPI(orgId, 1);
+            const data = await findStaffByOrgId(orgId);
             setMember(Array.isArray(data) ? data : []);
         } catch (err) {
             console.log(err);
@@ -88,7 +88,7 @@ function UserStaffManagement() {
             const items = data.map(function (item: orgWithoutChild) {
                 return ({
                     value: item.id,
-                    label: item.org_name,
+                    label: item.orgName,
                 });
             });
             setListOrgWithoutChild(items);
@@ -116,7 +116,7 @@ function UserStaffManagement() {
             const items = data.map(function (item: RoleItem) {
                 return ({
                     value: item.id,
-                    label: item.role_name,
+                    label: item.roleName,
                 });
             });
             setlistPosition(items);
@@ -130,7 +130,7 @@ function UserStaffManagement() {
 
     const getRoleByUser = async (userId: string) => {
         try {
-            const data = await getRoleByUserAPI(userId, {orgId: orgSelected});
+            const data = await getRoleByUserAPI(userId, orgSelected.id);
             setRoleOfUser(data);
         } catch (err) {
             console.log(err);

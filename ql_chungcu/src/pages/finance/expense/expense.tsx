@@ -46,10 +46,10 @@ export default function Expense() {
 
   // Pagination state
   const [meta, setMeta] = useState<PaginationMeta>({
-    current_page: 1,
-    last_page: 1,
-    per_page: 10,
-    total: 0,
+    page: 0,
+    totalPages: 1,
+    size: 10,
+    totalElements: 0,
   });
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
@@ -116,9 +116,14 @@ export default function Expense() {
       }
 
       const response = await getExpenses(filters);
-      setExpenses(response.data);
-      setMeta(response.meta);
-      setSummary(response.summary);
+      setExpenses(response.result?.data || []);
+      setMeta(response.result || {
+        page: 0,
+        totalPages: 1,
+        size: pageSize,
+        totalElements: 0,
+      });
+      setSummary(response.summary || { total_paid: 0, total_expect: 0 });
     } catch (error) {
       console.error("Error fetching expenses:", error);
       toast.error("Không thể tải danh sách khoản chi");

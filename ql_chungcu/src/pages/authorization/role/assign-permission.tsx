@@ -22,14 +22,14 @@ import type {psModule} from "@/types/Permission.ts";
 // Định nghĩa schema Zod
 const schema = z.object({
     permission: z.array(z.string()).optional(),
-    role_id: z.string(),
+    roleId: z.string(),
 })
 
 export type AssignPermissionFormSchema = z.infer<typeof schema>
 
 type ComponentProps = {
-    role_id: string,
-    role_name: string,
+    roleId: string,
+    roleName: string,
     itemsPermission: any[]
     permissionOfRole: string[]
     onSubmit: (data: AssignPermissionFormSchema) => void,
@@ -45,8 +45,8 @@ export default function AssignPermissionForm({
                                                  onSubmit,
                                                  itemsPermission,
                                                  permissionOfRole,
-                                                 role_id,
-                                                 role_name,
+                                                 roleId,
+                                                 roleName,
                                              }: ComponentProps) {
     const {
         handleSubmit,
@@ -56,7 +56,7 @@ export default function AssignPermissionForm({
         resolver: zodResolver(schema),
         defaultValues: {
             permission: [] as string[],
-            role_id: role_id
+            roleId: roleId
         },
     })
 
@@ -64,10 +64,12 @@ export default function AssignPermissionForm({
         if (permissionOfRole) {
             reset({
                 permission: permissionOfRole || [],
-                role_id: role_id || ""
+                roleId: roleId || ""
             })
         }
-    }, [permissionOfRole, role_id, reset])
+
+        console.log(permissionOfRole)
+    }, [permissionOfRole, roleId, reset])
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -84,7 +86,7 @@ export default function AssignPermissionForm({
                       })}>
                     <SheetHeader>
                         <SheetTitle>
-                            {role_name}
+                            {roleName}
                         </SheetTitle>
                         <SheetDescription>
                             <span className="text-sm font-semibold text-foreground flex items-center gap-2">
@@ -97,8 +99,8 @@ export default function AssignPermissionForm({
                     <div className="grid auto-rows-min px-4 h-[75vh] overflow-y-auto">
                         <div className="space-y-4">
                             {itemsPermission.map((itemPs: psModule) => (
-                                <div key={itemPs.module_name} className="space-y-2">
-                                    <p className="text-xs font-semibold text-foreground uppercase tracking-wide">{itemPs.module_name}</p>
+                                <div key={itemPs.moduleName} className="space-y-2">
+                                    <p className="text-xs font-semibold text-foreground uppercase tracking-wide">{itemPs.moduleName}</p>
                                     <div className="grid gap-2 sm:grid-cols-2">
                                         {itemPs.permission.map((perm) => (
                                             <Controller

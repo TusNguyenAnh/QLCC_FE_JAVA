@@ -16,15 +16,13 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet.tsx";
 
-import { Checkbox } from "@/components/ui/checkbox.tsx";
-import type { RoleItem } from "@/types/Role.ts";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 
 // Định nghĩa schema Zod
 const schema = z.object({
-  role_id: z.string(),
-  user_id: z.string(),
-  org_id: z.string(),
+  roleId: z.string(),
+  userId: z.string(),
+  orgId: z.string(),
 });
 
 export type AssignRoleFormSchema = z.infer<typeof schema>;
@@ -53,17 +51,17 @@ export default function AssignRoleForm({
   const { handleSubmit, control, reset } = useForm<AssignRoleFormSchema>({
     resolver: zodResolver(schema),
     defaultValues: {
-      role_id: roleOfUser,
-      user_id: user_id,
-      org_id: org_id,
+      roleId: roleOfUser,
+      userId: user_id,
+      orgId: org_id,
     },
   });
 
   useEffect(() => {
     reset({
-      role_id: roleOfUser || "",
-      user_id: user_id || "",
-      org_id: org_id || "",
+      roleId: roleOfUser || "",
+      userId: user_id || "",
+      orgId: org_id || "",
     });
   }, [roleOfUser, user_id, reset, org_id]);
 
@@ -102,7 +100,7 @@ export default function AssignRoleForm({
               {/*            <Controller*/}
               {/*                key={itemRole.id}*/}
               {/*                control={control}*/}
-              {/*                name="role_id"*/}
+              {/*                name="roleId"*/}
               {/*                render={({field}) => {*/}
               {/*                    const checked = !!field.value?.includes(*/}
               {/*                        itemRole.id*/}
@@ -140,7 +138,7 @@ export default function AssignRoleForm({
               {/*))}*/}
 
               <Controller
-                name="role_id"
+                name="roleId"
                 control={control}
                 render={({ field }) => (
                   <RadioGroup
@@ -155,7 +153,7 @@ export default function AssignRoleForm({
                         className="flex items-center space-x-2 p-3 rounded-lg border cursor-pointer"
                       >
                         <RadioGroupItem value={itemRole.id} id={itemRole.id} />
-                        <span className="flex-1">{itemRole.role_name}</span>
+                        <span className="flex-1">{itemRole.roleName}</span>
                       </Label>
                     ))}
                   </RadioGroup>

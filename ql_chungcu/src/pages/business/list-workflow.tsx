@@ -29,16 +29,16 @@ export function ListWorkflow({workflows, selectedWorkflow, setSelectedWorkflow}:
                             onClick={() => setSelectedWorkflow(workflow)}
                         >
                             <div className="flex items-center justify-between mb-2">
-                                <h4 className="font-medium text-foreground">{workflow.workflow_name}</h4>
+                                <h4 className="font-medium text-foreground">{workflow.workflowName}</h4>
                                 <Badge variant={workflow.status == 0 ? "default" : "secondary"}>
                                     {workflow.status == 0 ? "Đang dùng" : "Tạm dừng"}
                                 </Badge>
                             </div>
                             <p className="text-sm text-muted-foreground mb-2">{workflow.description}</p>
                             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <span>{workflow.workflow_step.length} cấp</span>
+                                <span>{workflow.workflowSteps.length} cấp</span>
                                 <span>•</span>
-                                <span>{workflow.task_type.length} loại</span>
+                                <span>{workflow.taskType.length} loại</span>
                             </div>
                         </div>
                     ))}

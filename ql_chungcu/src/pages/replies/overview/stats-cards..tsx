@@ -11,8 +11,8 @@ interface StatsCardsProps {
 
 export function StatsCards({taskAction, pendingReviewTotal}: StatsCardsProps) {
     const pendingReview = pendingReviewTotal
-    const rejectRequests = taskAction?.find((t) => t.action === STATUS["R"])?.total_tasks || 0
-    const completedRequests = taskAction?.find((t) => t.action === STATUS["A"])?.total_tasks || 0
+    const rejectRequests = taskAction?.find((t) => t.action === STATUS["R"])?.count || 0
+    const completedRequests = taskAction?.find((t) => t.action === STATUS["A"])?.count || 0
     const totalRequests = pendingReview + rejectRequests + completedRequests
 
     const stats = [

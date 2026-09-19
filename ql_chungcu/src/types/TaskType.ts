@@ -1,25 +1,25 @@
 export type TaskType = {
     id: string;
-    complex_id: string;
-    type_name: string;
+    complexId: string;
+    typeName: string;
     description: string;
-    workflow_id: string;
+    workflowId: string;
     priority: {
         id: string;
-        priority_name: string;
+        priorityName: string;
     };
     status?: number;
 }
 
 export type fillItemTt = {
     id: string;
-    type_name: string;
-    workflow_id: string;
+    typeName: string;
+    workflowId: string;
     description: string;
     status?: number;
-    complex_id: string;
+    complexId: string;
     priority: {
         id: string;
-        priority_name: string;
+        priorityName: string;
     };
 }

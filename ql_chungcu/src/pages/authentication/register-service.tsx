@@ -29,13 +29,13 @@ import {createComplexAPI} from "@/apis/complexAPI.ts";
 import {toast, Toaster} from "sonner";
 
 const schema = z.object({
-    complex_name: z.string().min(1, "Tên chung cư không được để trống"),
+    complexName: z.string().min(1, "Tên chung cư không được để trống"),
     address: z.string().min(1, "Địa chỉ không được để trống"),
-    total_building: z.number(),
-    total_apartment: z.number(),
-    name_contact: z.string().min(1, "Tên liên hệ không được để trống"),
-    email_contact: z.string().min(1, "Email không được để trống"),
-    phone_contact: z.string().min(1, "Số điện thoại liên hệ không được để trống"),
+    totalBuilding: z.number(),
+    totalApartment: z.number(),
+    nameContact: z.string().min(1, "Tên liên hệ không được để trống"),
+    emailContact: z.string().min(1, "Email không được để trống"),
+    phoneContact: z.string().min(1, "Số điện thoại liên hệ không được để trống"),
     description: z.string().optional(),
     files: z.array(z.any())
         .optional()
@@ -59,14 +59,14 @@ export const RegisterService: React.FC = () => {
     } = useForm<RegisterFormSchema>({
         resolver: zodResolver(schema),
         defaultValues: {
-            complex_name: "",
+            complexName: "",
             address: "",
-            total_building: 1,
-            total_apartment: 1,
-            name_contact: "",
-            email_contact: "",
+            totalBuilding: 1,
+            totalApartment: 1,
+            nameContact: "",
+            emailContact: "",
             description: "",
-            phone_contact: "",
+            phoneContact: "",
             files: [],
         },
     })
@@ -79,17 +79,16 @@ export const RegisterService: React.FC = () => {
         setLoading(true);
         try {
             const formData = new FormData();
-            formData.append("complex_name", data.complex_name);
+            formData.append("complexName", data.complexName);
             formData.append("address", data.address);
-            formData.append("total_building", String(data.total_building));
-            formData.append("total_apartment", String(data.total_apartment));
-            formData.append("name_contact", data.name_contact);
-            formData.append("email_contact", data.email_contact);
-            formData.append("phone_contact", data.phone_contact);
+            formData.append("totalBuilding", String(data.totalBuilding));
+            formData.append("totalApartment", String(data.totalApartment));
+            formData.append("nameContact", data.nameContact);
+            formData.append("emailContact", data.emailContact);
+            formData.append("phoneContact", data.phoneContact);
             if (data.description) formData.append("description", data.description);
 
             (data.files || []).forEach((file: any) => formData.append("files[]", file));
-            console.log(data);
             await createComplexAPI(formData);
             toast.success("Đăng ký dịch vụ thành công! Chúng tôi sẽ gửi thông tin qua email cho bạn trong thời gian sớm nhất.");
         } catch (err) {
@@ -164,19 +163,19 @@ export const RegisterService: React.FC = () => {
 
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <Label htmlFor="complex_name" className="text-base">
+                                        <Label htmlFor="complexName" className="text-base">
                                             <Building2 className="inline mr-2 h-4 w-4"/>
                                             Tên chung cư <span className="text-red-500">*</span>
                                         </Label>
 
-                                        <Input id="complex_name" {...register("complex_name", {
+                                        <Input id="complexName" {...register("complexName", {
                                             setValueAs: (value) => value?.trim()
                                         })}
                                                placeholder="Ví dụ: Chung cư Vinhomes Central Park"
-                                               autoComplete="complex_name" className="h-11"
+                                               autoComplete="complexName" className="h-11"
                                         />
-                                        {errors.complex_name &&
-                                            <p className="text-sm text-red-500">{errors.complex_name.message}</p>}
+                                        {errors.complexName &&
+                                            <p className="text-sm text-red-500">{errors.complexName.message}</p>}
 
                                     </div>
 
@@ -197,31 +196,31 @@ export const RegisterService: React.FC = () => {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="total_building" className="text-base">
+                                        <Label htmlFor="totalBuilding" className="text-base">
                                             Số lượng tòa nhà
                                         </Label>
                                         <Input
-                                            id="total_building" {...register("total_building", {valueAsNumber: true})}
+                                            id="totalBuilding" {...register("totalBuilding", {valueAsNumber: true})}
                                             type="number"
                                             placeholder="Ví dụ: 5"
-                                            autoComplete="total_building" className="h-11"
+                                            autoComplete="totalBuilding" className="h-11"
                                         />
-                                        {errors.total_building &&
-                                            <p className="text-sm text-red-500">{errors.total_building.message}</p>}
+                                        {errors.totalBuilding &&
+                                            <p className="text-sm text-red-500">{errors.totalBuilding.message}</p>}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="total_apartment" className="text-base">
+                                        <Label htmlFor="totalApartment" className="text-base">
                                             Tổng số căn hộ
                                         </Label>
                                         <Input
-                                            id="total_apartment" {...register("total_apartment", {valueAsNumber: true})}
+                                            id="totalApartment" {...register("totalApartment", {valueAsNumber: true})}
                                             type="number"
                                             placeholder="Ví dụ: 500"
-                                            autoComplete="total_apartment" className="h-11"
+                                            autoComplete="totalApartment" className="h-11"
                                         />
-                                        {errors.total_apartment &&
-                                            <p className="text-sm text-red-500">{errors.total_apartment.message}</p>}
+                                        {errors.totalApartment &&
+                                            <p className="text-sm text-red-500">{errors.totalApartment.message}</p>}
                                     </div>
                                 </div>
                             </div>
@@ -234,49 +233,49 @@ export const RegisterService: React.FC = () => {
 
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <Label htmlFor="name_contact" className="text-base">
+                                        <Label htmlFor="nameContact" className="text-base">
                                             <User className="inline mr-2 h-4 w-4"/>
                                             Họ và tên <span className="text-red-500">*</span>
                                         </Label>
-                                        <Input id="name_contact" {...register("name_contact", {
+                                        <Input id="nameContact" {...register("nameContact", {
                                             setValueAs: (value) => value?.trim()
                                         })}
                                                placeholder="Nguyễn Văn A"
-                                               autoComplete="name_contact" className="h-11"
+                                               autoComplete="nameContact" className="h-11"
                                         />
-                                        {errors.name_contact &&
-                                            <p className="text-sm text-red-500">{errors.name_contact.message}</p>}
+                                        {errors.nameContact &&
+                                            <p className="text-sm text-red-500">{errors.nameContact.message}</p>}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="phone_contact" className="text-base">
+                                        <Label htmlFor="phoneContact" className="text-base">
                                             <Phone className="inline mr-2 h-4 w-4"/>
                                             Số điện thoại <span className="text-red-500">*</span>
                                         </Label>
-                                        <Input id="phone_contact" {...register("phone_contact", {
+                                        <Input id="phoneContact" {...register("phoneContact", {
                                             setValueAs: (value) => value?.trim()
                                         })}
                                                placeholder="0912345678"
-                                               autoComplete="phone_contact" className="h-11"
+                                               autoComplete="phoneContact" className="h-11"
                                         />
-                                        {errors.phone_contact &&
-                                            <p className="text-sm text-red-500">{errors.phone_contact.message}</p>}
+                                        {errors.phoneContact &&
+                                            <p className="text-sm text-red-500">{errors.phoneContact.message}</p>}
                                     </div>
 
                                     <div className="space-y-2 md:col-span-2">
-                                        <Label htmlFor="email_contact" className="text-base">
+                                        <Label htmlFor="emailContact" className="text-base">
                                             <Mail className="inline mr-2 h-4 w-4"/>
                                             Email <span className="text-red-500">*</span>
                                         </Label>
-                                        <Input id="email_contact" {...register("email_contact", {
+                                        <Input id="emailContact" {...register("emailContact", {
                                             setValueAs: (value) => value?.trim()
                                         })}
                                                type="email"
                                                placeholder="example@email.com"
-                                               autoComplete="email_contact" className="h-11"
+                                               autoComplete="emailContact" className="h-11"
                                         />
-                                        {errors.email_contact &&
-                                            <p className="text-sm text-red-500">{errors.email_contact.message}</p>}
+                                        {errors.emailContact &&
+                                            <p className="text-sm text-red-500">{errors.emailContact.message}</p>}
                                     </div>
                                 </div>
                             </div>

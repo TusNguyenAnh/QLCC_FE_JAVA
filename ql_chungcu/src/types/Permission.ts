@@ -1,5 +1,5 @@
 export type psModule = {
-    module_name: string;
+    moduleName: string;
     permission: psItem[];
 }
 
@@ -8,6 +8,6 @@ export type psItem = {
     name?: string;
     module?: string,
     description: string,
-    total_roles?: number
+    totalRoles?: number
 }
 

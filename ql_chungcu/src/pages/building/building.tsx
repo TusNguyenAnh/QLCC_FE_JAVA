@@ -35,7 +35,7 @@ export function Building() {
 
     // xu ly khi nhan nut them moi
     const handleCreate = () => {
-        setBdUpdate({complex_id: complex}) // complex_id se lay trong localstorage hoac co the lay tu api
+        setBdUpdate({complexId: complex}) // complexId se lay trong localstorage hoac co the lay tu api
         setAction("CREATE")
         setOpenDialog(true)
     }

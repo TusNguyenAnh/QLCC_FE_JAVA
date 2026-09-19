@@ -7,7 +7,7 @@ import {RotateCw} from "lucide-react";
 import {AuthContext} from "@/context/AuthContext.tsx";
 import {getAllOrgWithoutChildAPI} from "@/apis/orgAPI.ts";
 import type {orgWithoutChild} from "@/types/Organization.ts";
-import {findByOrgIdAPI} from "@/apis/userAPI.ts";
+import {findResByOrgId} from "@/apis/userAPI.ts";
 import {DataTable} from "@/layouts/tables/data-table.tsx";
 import {ColumnsUser} from "@/layouts/columns/column-tb-user.tsx";
 import type {Member} from "@/types/User.ts";
@@ -36,7 +36,7 @@ function UserOrgManagement() {
     const [listOrgWithoutChild, setListOrgWithoutChild] = useState<
         orgWithoutChild[] | []
     >([]);
-    const [orgSelected, setOrgSelected] = useState<orgWithoutChild>({id: "", org_name: ""});
+    const [orgSelected, setOrgSelected] = useState<orgWithoutChild>({id: "", orgName: ""});
     const [member, setMember] = useState<Member[]>([]);
     const [userId, setUserId] = useState("");
 
@@ -61,7 +61,7 @@ function UserOrgManagement() {
         setLoading(true);
         try {
             setOrgSelected(org);
-            const data = await findByOrgIdAPI(org.id, 0);
+            const data = await findResByOrgId(org.id);
             setMember(Array.isArray(data) ? data : []);
         } catch (err) {
             console.log(err);
@@ -96,7 +96,7 @@ function UserOrgManagement() {
 
     const getRoleByUser = async (userId: string) => {
         try {
-            const data = await getRoleByUserAPI(userId, {orgId: orgSelected?.id});
+            const data = await getRoleByUserAPI(userId, orgSelected.id);
             setRoleOfUser(data);
         } catch (err) {
             console.log(err);
@@ -150,7 +150,7 @@ function UserOrgManagement() {
                             size="sm"
                             onClick={() => fetchMembers(org)}
                         >
-                            {org.org_name}
+                            {org.orgName}
                         </Button>
                     ))}
                 </div>

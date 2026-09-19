@@ -29,7 +29,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface BuildingRatio {
   id: string;
-  financial_ratio: number;
+  ratio: number;
 }
 
 interface BuildingConfigProps {
@@ -53,7 +53,7 @@ export default function BuildingConfig({
 
   useEffect(() => {
     const total = buildings.reduce(
-      (sum, b) => sum + (b.financial_ratio || 0),
+      (sum, b) => sum + (b.ratio || 0),
       0,
     );
     setTotalPercentage(Math.round(total * 10) / 10);
@@ -62,7 +62,7 @@ export default function BuildingConfig({
   const addBuilding = () => {
     const newBuilding: BuildingRatio = {
       id: `temp-${Date.now()}`,
-      financial_ratio: 0,
+      ratio: 0,
     };
     setBuildings([...buildings, newBuilding]);
   };
@@ -220,11 +220,11 @@ export default function BuildingConfig({
                         min="0"
                         max="100"
                         placeholder="0.0"
-                        value={building.financial_ratio || ""}
+                        value={building.ratio || ""}
                         onChange={(e) =>
                           updateBuilding(
                             index,
-                            "financial_ratio",
+                            "ratio",
                             e.target.value,
                           )
                         }

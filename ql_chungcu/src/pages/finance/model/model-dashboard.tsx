@@ -24,7 +24,7 @@ import type { Building } from "@/types/Building.ts";
 
 interface BuildingRatio {
   id: string;
-  building_name?: string;
+  buildingName?: string;
   financial_ratio: number;
 }
 
@@ -74,8 +74,8 @@ export default function ModelDashboard({
     setEditedBuildings(
       buildings.map((b) => ({
         id: b.id,
-        building_name: b.building_name,
-        financial_ratio: Number(b.financial_ratio) || 0,
+        buildingName: b.buildingName,
+        financial_ratio: Number(b.financialRatio) || 0,
       })),
     );
     setIsEditing(true);
@@ -89,7 +89,7 @@ export default function ModelDashboard({
   const handleRatioChange = (id: string, value: string) => {
     setEditedBuildings((prev) =>
       prev.map((b) =>
-        b.id === id ? { ...b, financial_ratio: parseFloat(value) || 0 } : b,
+        b.id === id ? { ...b, financialRatio: parseFloat(value) || 0 } : b,
       ),
     );
   };
@@ -196,13 +196,13 @@ export default function ModelDashboard({
                       className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
                     >
                       <span className="font-medium">
-                        {building.building_name}
+                        {building.buildingName}
                       </span>
                       <Badge
                         variant="secondary"
                         className="text-base px-3 py-1"
                       >
-                        {Number(building.financial_ratio).toFixed(1)}%
+                        {Number(building.financialRatio).toFixed(1)}%
                       </Badge>
                     </div>
                   ))
@@ -213,7 +213,7 @@ export default function ModelDashboard({
                       className="flex items-center justify-between p-4 border-2 border-blue-300 rounded-lg bg-blue-50"
                     >
                       <span className="font-medium flex-1">
-                        {building.building_name}
+                        {building.buildingName}
                       </span>
                       <div className="flex items-center gap-2">
                         <Input
@@ -262,7 +262,7 @@ export default function ModelDashboard({
                   {isEditing
                     ? totalPercentage.toFixed(1)
                     : buildings
-                        .reduce((sum, b) => sum + Number(b.financial_ratio), 0)
+                        .reduce((sum, b) => sum + Number(b.financialRatio), 0)
                         .toFixed(1)}
                   %
                 </Badge>

@@ -1,27 +1,27 @@
 export type User = {
     id: string;
     username: string;
-    res_id: string;
-    role_id: string;
+    resId: string;
+    roleId: string;
     status: number;
     email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
     role: {
         id: string;
-        role_name: string;
+        roleName: string;
         status: number;
     };
 }
 
 export type Member = {
     id: string,
-    org_id: string,
-    apt_id: string,
-    res_id: string,
+    orgId: string,
+    aptId: string,
+    resId: string,
     fullname : string,
     email : string,
-    phone_number :string,
+    phoneNumber :string,
     birthday : string,
     relationship:string,
     gender : string,

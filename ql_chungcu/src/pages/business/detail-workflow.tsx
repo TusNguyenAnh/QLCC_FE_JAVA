@@ -12,7 +12,7 @@ type ComponentProps = {
 function DetailWorkflow({selectedWorkflow}: ComponentProps) {
     const uniquePriority = Array.from(
         new Map(
-            selectedWorkflow?.task_type.map((t) => [t.priority.priority_name, t])
+            selectedWorkflow?.taskType.map((t) => [t.priority.priorityName, t])
         ).values()
     );
 
@@ -25,7 +25,7 @@ function DetailWorkflow({selectedWorkflow}: ComponentProps) {
                         <div className="flex items-center justify-between">
                             <div>
                                 <CardTitle className="flex items-center gap-2">
-                                    {selectedWorkflow.workflow_name}
+                                    {selectedWorkflow.workflowName}
                                     <Badge variant={selectedWorkflow.status == 0 ? "default" : "secondary"}>
                                         {selectedWorkflow.status == 0 ? "Đang dùng" : "Tạm dừng"}
                                     </Badge>
@@ -54,7 +54,7 @@ function DetailWorkflow({selectedWorkflow}: ComponentProps) {
                             </TabsList>
 
                             <TabsContent value="levels" className="space-y-4">
-                                {selectedWorkflow.workflow_step.map((level, index) => (
+                                {selectedWorkflow.workflowSteps.map((level, index) => (
                                     <div key={level.id}
                                          className="flex items-start gap-4 p-4 border rounded-lg">
                                         <div className="flex flex-col items-center">
@@ -62,25 +62,33 @@ function DetailWorkflow({selectedWorkflow}: ComponentProps) {
                                                 className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
                                                 {index + 1}
                                             </div>
-                                            {index < selectedWorkflow.workflow_step.length - 1 && (
+                                            {index < selectedWorkflow.workflowSteps.length - 1 && (
                                                 <ArrowDown className="h-4 w-4 text-muted-foreground mt-2"/>
                                             )}
                                         </div>
                                         <div className="flex-1">
                                             <h4 className="font-medium text-foreground">Ban quản trị
-                                                cấp {level.org_level}</h4>
+                                                cấp {level.orgLevel}</h4>
                                             <p className="text-sm text-muted-foreground mb-2">{level.description}</p>
                                             <div className="flex items-center gap-4 text-sm">
                                                 <div className="flex items-center gap-1">
                                                     <Users className="h-4 w-4"/>
-                                                    <span>{level.position.length}</span>
+                                                    <span>{level.workflowStepApprovers.length}</span>
                                                 </div>
-                                                <div>Cần: {level.position.map((pos:{id:string,role_name:string},index)=>{
-                                                    if(index == level.position.length -1){
-                                                        return pos.role_name + " ";
+                                                <div>Cần: {level.workflowStepApprovers.map((pos: {
+                                                    roleDataMapper: {
+                                                        id: string,
+                                                        complexId: string,
+                                                        roleName: string,
+                                                        description: string,
                                                     }
-                                                    return pos.role_name + ", ";
-                                                })}phê duyệt</div>
+                                                }, index) => {
+                                                    if (index == level.workflowStepApprovers.length - 1) {
+                                                        return pos.roleDataMapper.roleName + " ";
+                                                    }
+                                                    return pos.roleDataMapper.roleName + ", ";
+                                                })}phê duyệt
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -91,9 +99,9 @@ function DetailWorkflow({selectedWorkflow}: ComponentProps) {
                                 <div>
                                     <label className="font-medium mb-2">Loại yêu cầu đang áp dụng</label>
                                     <div className="flex flex-wrap gap-2">
-                                        {selectedWorkflow.task_type.map((cat) => (
+                                        {selectedWorkflow.taskType.map((cat) => (
                                             <Badge key={cat.id} variant="secondary">
-                                                {cat.type_name}
+                                                {cat.typeName}
                                             </Badge>
                                         ))}
                                     </div>
@@ -103,7 +111,7 @@ function DetailWorkflow({selectedWorkflow}: ComponentProps) {
                                     <div className="flex flex-wrap gap-2">
                                         {uniquePriority.map((pri) => (
                                             <Badge key={pri.priority.id} variant="secondary">
-                                                {pri.priority.priority_name}
+                                                {pri.priority.priorityName}
                                             </Badge>
                                         ))}
                                     </div>

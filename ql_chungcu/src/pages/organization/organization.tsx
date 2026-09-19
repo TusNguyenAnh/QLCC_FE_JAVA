@@ -54,7 +54,7 @@ function Organization() {
             const items = data.map(function (item: orgWithoutChild) {
                 return ({
                     value: item.id,
-                    label: item.org_name,
+                    label: item.orgName,
                 });
             });
             setListOrgWithoutChild(items);
@@ -70,7 +70,7 @@ function Organization() {
             const items = data.map(function (item: bdItemCheckbox) {
                 return ({
                     id: item.id,
-                    building_name: item.building_name,
+                    buildingName: item.buildingName,
                 });
             });
             setListBuilding(items);

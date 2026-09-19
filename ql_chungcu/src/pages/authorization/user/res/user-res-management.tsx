@@ -71,7 +71,7 @@ function UserResManagement() {
 
     const getRoleByUser = async (userId: string) => {
         try {
-            const data = await getRoleByUserAPI(userId, {});
+            const data = await getRoleByUserAPI(userId, "");
             setRoleOfUser(data);
         } catch (err) {
             console.log(err);

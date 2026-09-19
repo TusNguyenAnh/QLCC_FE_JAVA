@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import { useEffect} from "react";
 import {useForm, Controller} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -17,21 +17,14 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet.tsx";
-
-import type {fillItemOrg} from "@/types/Organization.ts";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
-import type {bdItemCheckbox} from "@/types/Building.ts";
-import {AuthContext} from "@/context/AuthContext.tsx";
-import {handleAxiosStatusCode} from "@/utils/request.ts";
-import {getBdIdByOrgIdAPI} from "@/apis/orgAPI.ts";
 import type {fillItemTt} from "@/types/TaskType.ts";
 
 // Định nghĩa schema Zod
 const schema = z.object({
-    type_name: z.string().min(1, "Tên loại đề xuất không được để trống"),
+    typeName: z.string().min(1, "Tên loại đề xuất không được để trống"),
     description: z.string().optional(),
-    workflow_id: z.string().optional(),
-    priority_id: z.string().optional(),
+    workflowId: z.string().optional(),
+    priorityId: z.string().optional(),
 });
 
 export type TaskTypeFormSchema = z.infer<typeof schema>;
@@ -66,20 +59,20 @@ export default function TaskTypeForm({
     } = useForm<TaskTypeFormSchema>({
         resolver: zodResolver(schema),
         defaultValues: {
-            type_name: formData?.type_name || "",
+            typeName: formData?.typeName || "",
             description: formData?.description || "",
-            workflow_id: formData?.workflow_id || "",
-            priority_id: formData?.priority.id || "",
+            workflowId: formData?.workflowId || "",
+            priorityId: formData?.priority.id || "",
         },
     });
 
     useEffect(() => {
         if (formData) {
             reset({
-                type_name: formData?.type_name || "",
+                typeName: formData?.typeName || "",
                 description: formData?.description || "",
-                workflow_id: formData?.workflow_id || "",
-                priority_id: formData?.priority.id || "",
+                workflowId: formData?.workflowId || "",
+                priorityId: formData?.priority.id || "",
             });
         }
     }, [formData, reset]);
@@ -88,10 +81,10 @@ export default function TaskTypeForm({
     useEffect(() => {
         if (!open) {
             reset({
-                type_name: "",
+                typeName: "",
                 description: "",
-                workflow_id: "",
-                priority_id: "",
+                workflowId: "",
+                priorityId: "",
             });
         }
     }, [open, reset]);
@@ -128,13 +121,13 @@ export default function TaskTypeForm({
                     <div className="grid auto-rows-min px-4 h-[70vh] overflow-y-auto">
                         <div className="grid gap-4">
                             <div className="grid gap-3">
-                                <Label htmlFor="type_name">Tên loại yêu cầu</Label>
-                                <Input id="type_name" {...register("type_name", {
+                                <Label htmlFor="typeName">Tên loại yêu cầu</Label>
+                                <Input id="typeName" {...register("typeName", {
                                     setValueAs: (value) => value?.trim()
                                 })} />
-                                {errors.type_name && (
+                                {errors.typeName && (
                                     <p className="text-sm text-red-500">
-                                        {errors.type_name.message}
+                                        {errors.typeName.message}
                                     </p>
                                 )}
                             </div>
@@ -148,10 +141,10 @@ export default function TaskTypeForm({
                             </div>
 
                             <div className="grid gap-3">
-                                <Label htmlFor="workflow_id">Quy trình</Label>
+                                <Label htmlFor="workflowId">Quy trình</Label>
                                 <Controller
                                     control={control}
-                                    name="workflow_id"
+                                    name="workflowId"
                                     render={({field}) => (
                                         <Combobox
                                             items={itemsWf}
@@ -159,7 +152,7 @@ export default function TaskTypeForm({
                                                 field.onChange(value);
                                             }}
                                             itemUpdate={
-                                                action === "UPDATE" ? formData.workflow_id : ""
+                                                action === "UPDATE" ? formData.workflowId : ""
                                             }
                                         />
                                     )}
@@ -167,10 +160,10 @@ export default function TaskTypeForm({
                             </div>
 
                             <div className="grid gap-3">
-                                <Label htmlFor="priority_id">Mức ưu tiên</Label>
+                                <Label htmlFor="priorityId">Mức ưu tiên</Label>
                                 <Controller
                                     control={control}
-                                    name="priority_id"
+                                    name="priorityId"
                                     render={({field}) => (
                                         <Combobox
                                             items={itemsPriority}

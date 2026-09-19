@@ -11,5 +11,5 @@ export const logoutUser = async () => {
 };
 
 export const getProfile = async (): Promise<ProfileResponse> => {
-    return await request.get("/auth/profile");
+    return await request.post("/auth/profile");
 };

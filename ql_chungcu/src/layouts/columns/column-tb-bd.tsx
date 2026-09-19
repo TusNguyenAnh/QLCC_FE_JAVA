@@ -53,15 +53,24 @@ export const ColumnsBd = ({handleUpdate, handleDelete}: ComponentProps): ColumnD
     },
 
     {
-        accessorKey: 'building_name',
+        accessorKey: 'buildingName',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Tên tòa nhà"/>
         ),
 
         cell: ({row}) => (
-            <div>{row.getValue('building_name')}</div>
+            <div>{row.getValue('buildingName')}</div>
         ),
     },
+    // {
+    //     accessorKey: 'address',
+    //     header: ({column}) => (
+    //         <DataTableColumnHeader column={column} title="Địa chỉ"/>
+    //     ),
+    //     cell: ({row}) => (
+    //         <div>{row.getValue('address')}</div>
+    //     ),
+    // },
 
     {
         id: 'actions',

@@ -14,7 +14,7 @@ type WizardStep = "selection" | "configuration" | "dashboard";
 
 interface BuildingRatio {
   id: string;
-  financial_ratio: number;
+  ratio: number;
 }
 
 export default function FinanceModel() {
@@ -37,7 +37,7 @@ export default function FinanceModel() {
   const checkInitialization = async () => {
     try {
       const data = await findComplexByIdAPI(complex);
-      const finance_model = data.financial_model;
+      const finance_model = data.financialModel;
       if (finance_model) {
         setIsSystemInitialized(true);
         setSelectedModelType(finance_model);
@@ -58,7 +58,7 @@ export default function FinanceModel() {
       const items = data.map(function (item: bdItemCheckbox) {
         return {
           value: item.id,
-          label: item.building_name,
+          label: item.buildingName,
         };
       });
       console.log(items);

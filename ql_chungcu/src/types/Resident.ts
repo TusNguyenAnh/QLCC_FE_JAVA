@@ -1,10 +1,10 @@
 export type Resident = {
     id: string,
     // org_id: string,
-    apt_id: string,
+    aptId: string,
     fullname : string,
     email : string,
-    phone_number :string,
+    phoneNumber :string,
     birthday : string,
     relationship:string,
     gender : string,
@@ -15,12 +15,12 @@ export type Resident = {
 
 export type fillItemBd = {
     id: string,
-    complex_id: string,
-    building_name: string,
+    complexId: string,
+    buildingName: string,
     address: string,
 }
 
 export type bdItemCheckbox = {
     id: string;
-    building_name: string;
+    buildingName: string;
 }

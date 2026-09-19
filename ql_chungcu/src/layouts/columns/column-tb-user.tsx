@@ -7,7 +7,6 @@ import {DataTableColumnHeader} from "@/layouts/data-table-header.tsx";
 
 import type {ColumnDef} from "@tanstack/react-table"
 import type {Member} from "@/types/User.ts";
-import type {roleItem} from "@/types/Role.ts";
 import {Badge} from "@/components/ui/badge.tsx";
 
 interface ComponentProps {
@@ -37,12 +36,12 @@ export const ColumnsUser = ({handleUpdate}: ComponentProps): ColumnDef<Member>[]
     },
 
     {
-        accessorKey: 'phone_number',
+        accessorKey: 'phoneNumber',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Số điện thoại"/>
         ),
         cell: ({row}) => (
-            <div>{row.getValue('phone_number')}</div>
+            <div>{row.getValue('phoneNumber')}</div>
         ),
     },
 
@@ -52,8 +51,8 @@ export const ColumnsUser = ({handleUpdate}: ComponentProps): ColumnDef<Member>[]
             <DataTableColumnHeader column={column} title="Trạng thái"/>
         ),
         cell: ({row}) => (
-            <Badge variant={row.getValue('status') == 0 ? "default" : "destructive"}>
-                {row.getValue('status') == 0 ? "Hoạt động" : "Không hoạt động"}
+            <Badge variant={"default"}>
+                {"Hoạt động"}
             </Badge>
 
         ),

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card.tsx";
 import {Badge} from "@/components/ui/badge.tsx";
 import {User, MapPin, Clock, CheckCircle, XCircle} from "lucide-react";
-import type {Task, TaskWorkflow} from "@/types/Task.ts";
+import type {Task} from "@/types/Task.ts";
 import {formatDate, PRIORITY_COLORS, STATUS} from "@/utils/reply-constant.ts";
 import {
     Dialog,
@@ -45,7 +45,7 @@ export function SendReqDetail({
                     <DialogHeader>
                         <div>
                             <h2 className="text-xl font-bold text-foreground mb-2">
-                                {request.task_name}
+                                {request.taskName}
                             </h2>
                             <p className="text-sm text-muted-foreground">
                                 Mã yêu cầu: {request.id}
@@ -58,11 +58,11 @@ export function SendReqDetail({
                             <div className="flex items-center gap-2">
                                 <Badge
                                     variant="outline"
-                                    className={PRIORITY_COLORS[request.priority_name]}
+                                    className={PRIORITY_COLORS[request.priorityName]}
                                 >
-                                    {request.priority_name}
+                                    {request.priorityName}
                                 </Badge>
-                                <Badge variant="outline">{request.type_name}</Badge>
+                                <Badge variant="outline">{request.typeName}</Badge>
                             </div>
                         </div>
                     </DialogTitle>
@@ -86,7 +86,7 @@ export function SendReqDetail({
                                     <div>
                                         <p className="text-sm text-muted-foreground">Toà nhà</p>
                                         <p className="font-medium">
-                                            {request.building_name}
+                                            {request.buildingName}
                                         </p>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@ export function SendReqDetail({
                                             Thời gian gửi
                                         </p>
                                         <p className="font-medium">
-                                            {formatDate(request.created_at)}
+                                            {formatDate(request.createdAt)}
                                         </p>
                                     </div>
                                 </div>

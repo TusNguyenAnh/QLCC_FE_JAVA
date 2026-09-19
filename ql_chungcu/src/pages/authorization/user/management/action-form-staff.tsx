@@ -23,9 +23,9 @@ import {useEffect} from "react";
 const schema = z.object({
     fullname: z.string().min(1, "Tên thành viên BQL không được để trống"),
     email: z.string().optional(),
-    phone_number: z.string().optional(),
-    org_id: z.string().optional(),
-    role_id: z.string().optional(),
+    phoneNumber: z.string().optional(),
+    orgId: z.string().optional(),
+    roleId: z.string().optional(),
 })
 
 export type StaffFormSchema = z.infer<typeof schema>
@@ -52,9 +52,9 @@ export default function StaffForm({open, setOpen, loading, items, onSubmit, form
         defaultValues: {
             fullname: "",
             email: "",
-            phone_number: "",
-            role_id: "",
-            org_id: "",
+            phoneNumber: "",
+            roleId: "",
+            orgId: "",
         },
     })
 
@@ -63,9 +63,9 @@ export default function StaffForm({open, setOpen, loading, items, onSubmit, form
             reset({
                 fullname: formData?.fullname || "",
                 email: formData?.email || "",
-                phone_number: formData?.phone_number || "",
-                role_id: formData?.role_id || "",
-                org_id: formData?.building_name || "",
+                phoneNumber: formData?.phoneNumber || "",
+                roleId: formData?.roleId || "",
+                orgId: formData?.building_name || "",
             })
         }
     }, [formData, reset])
@@ -106,10 +106,10 @@ export default function StaffForm({open, setOpen, loading, items, onSubmit, form
                             </div>
 
                             <div className="grid gap-3">
-                                <Label htmlFor="phone_number">Số điện thoại</Label>
-                                <Input id="phone_number" {...register("phone_number")}/>
-                                {errors.phone_number &&
-                                    <p className="text-sm text-red-500">{errors.phone_number.message}</p>}
+                                <Label htmlFor="phoneNumber">Số điện thoại</Label>
+                                <Input id="phoneNumber" {...register("phoneNumber")}/>
+                                {errors.phoneNumber &&
+                                    <p className="text-sm text-red-500">{errors.phoneNumber.message}</p>}
                             </div>
 
                             <div className="grid gap-3">
@@ -125,10 +125,10 @@ export default function StaffForm({open, setOpen, loading, items, onSubmit, form
 
 
                             <div className="grid gap-3">
-                                <Label htmlFor="role_id">Vị trí</Label>
+                                <Label htmlFor="roleId">Vị trí</Label>
                                 <Controller
                                     control={control}
-                                    name="role_id"
+                                    name="roleId"
                                     render={({field}) => (
                                         <Combobox
                                             items={positions}
@@ -141,10 +141,10 @@ export default function StaffForm({open, setOpen, loading, items, onSubmit, form
 
 
                             <div className="grid gap-3">
-                                <Label htmlFor="org_id">Thuộc cấp quản lý</Label>
+                                <Label htmlFor="orgId">Thuộc cấp quản lý</Label>
                                 <Controller
                                     control={control}
-                                    name="org_id"
+                                    name="orgId"
                                     render={({field}) => (
                                         <Combobox
                                             items={items}

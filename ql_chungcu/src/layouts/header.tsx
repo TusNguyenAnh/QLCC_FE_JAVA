@@ -48,6 +48,7 @@ export default function Header() {
         finance: 'Quản lý tài chính',
         revenue: 'Quản lý thu',
         expense: 'Quản lý chi',
+        deposit: 'Quản lý tài khoản tiền gửi',
         report: 'Báo cáo',
         settings: 'Cài đặt',
         cash: 'Sổ quỹ tiền mặt',

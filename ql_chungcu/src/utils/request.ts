@@ -5,7 +5,8 @@ import {toast} from "sonner";
 // const version = 'v1';
 
 const request = axios.create({
-    baseURL: 'https://api.bqtsoft.vn/api',
+    // baseURL: 'https://api.bqtsoft.vn/api',
+    baseURL: 'http://localhost:8000/api/',
     // baseURL: 'http://api.mbs.id.vn:5173/api',
     // baseURL: 'http://localhost:8080/api/'+ version,
     // baseURL: 'http://api.mbs.id.vn:5173/api/' + version,

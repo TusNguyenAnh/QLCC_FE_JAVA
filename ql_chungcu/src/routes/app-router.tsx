@@ -21,6 +21,7 @@ import {RoleManagement} from "@/pages/authorization/role/role-management.tsx";
 import UserManagement from "@/pages/authorization/user/user-management.tsx";
 import FinanceModel from "@/pages/finance/model/finance-model.tsx";
 import {SendRequest} from "@/pages/send-request/send-request.tsx";
+import Deposit from "@/pages/deposit/deposit.tsx";
 
 const AppRouter: React.FC = () => (
     <Routes>
@@ -101,9 +102,9 @@ const AppRouter: React.FC = () => (
         <Route
             path="/page/apres/apt"
             element={
-                <ProtectedRoute permissions={["view:apartment"]}>
+                // <ProtectedRoute permissions={["view:apartment"]}>
                     <MainLayout content={<Apartment/>}/>
-                </ProtectedRoute>
+                // </ProtectedRoute>
             }
         />
 
@@ -158,6 +159,15 @@ const AppRouter: React.FC = () => (
             element={
                 <ProtectedRoute permissions={[]}>
                     <MainLayout content={<Expense/>}/>
+                </ProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/page/finance/deposit"
+            element={
+                <ProtectedRoute permissions={[]}>
+                    <MainLayout content={<Deposit/>}/>
                 </ProtectedRoute>
             }
         />

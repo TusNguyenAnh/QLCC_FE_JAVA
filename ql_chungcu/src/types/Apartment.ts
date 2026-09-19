@@ -1,22 +1,22 @@
 export type Apt = {
     id: string;
-    apt_number: string;
-    apt_area: number;
+    aptNumber: string;
+    aptArea: number;
     status?: string;
-    building_id: string;
-    apt_type: string;
+    buildingId: string;
+    aptType: string;
     description: string;
     floor: number;
 }
 
 export type fillItemApt = {
     id: string;
-    apt_number: string;
-    gross_area: number;
+    aptNumber: string;
+    grossArea: number;
     coefficient: number;
     description: string;
-    building_id: string;
-    apt_type: string;
+    buildingId: string;
+    aptType: string;
     floor: number;
 }
 

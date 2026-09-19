@@ -36,12 +36,12 @@ import {cn} from "@/lib/utils.ts";
 import {Calendar} from "@/components/ui/calendar.tsx";
 
 const schema = z.object({
-    priority_id: z.array(z.string()).optional(),
-    taskType_id: z.array(z.string()).optional(),
-    time_approved_start: z.date().optional(),
-    time_approved_end: z.date().optional(),
-    time_request_start: z.date().optional(),
-    time_request_end: z.date().optional(),
+    priorityId: z.array(z.string()).optional(),
+    taskTypeId: z.array(z.string()).optional(),
+    timeApprovedStart: z.date().optional(),
+    timeApprovedEnd: z.date().optional(),
+    timeRequestStart: z.date().optional(),
+    timeRequestEnd: z.date().optional(),
     order: z.string().optional(),
 });
 
@@ -70,22 +70,22 @@ export default function FilterReqForm({
     } = useForm<FilterReqFormSchema>({
         resolver: zodResolver(schema),
         defaultValues: {
-            taskType_id: [],
-            priority_id: [],
-            time_approved_start: undefined,
-            time_approved_end: undefined,
-            time_request_start: undefined,
-            time_request_end: undefined,
+            taskTypeId: [],
+            priorityId: [],
+            timeApprovedStart: undefined,
+            timeApprovedEnd: undefined,
+            timeRequestStart: undefined,
+            timeRequestEnd: undefined,
             order: "",
         },
     });
 
-    const taskType_id = watch("taskType_id");
-    const priority_id = watch("priority_id");
-    const time_approved_start = watch("time_approved_start");
-    const time_approved_end = watch("time_approved_end");
-    const time_request_start = watch("time_request_start");
-    const time_request_end = watch("time_request_end");
+    const taskTypeId = watch("taskTypeId");
+    const priorityId = watch("priorityId");
+    const timeApprovedStart = watch("timeApprovedStart");
+    const timeApprovedEnd = watch("timeApprovedEnd");
+    const timeRequestStart = watch("timeRequestStart");
+    const timeRequestEnd = watch("timeRequestEnd");
     const order = watch("order");
 
     const [openTimeApStart, setOpenTimeApStart] = useState(false);
@@ -133,7 +133,7 @@ export default function FilterReqForm({
                     {/* Category Filter */}
                     <Controller
                         control={control}
-                        name="taskType_id"
+                        name="taskTypeId"
                         render={({field}) => (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -143,8 +143,8 @@ export default function FilterReqForm({
                                     >
                                         <Filter className="mr-2 h-4 w-4"/>
                                         Danh mục{" "}
-                                        {(taskType_id ?? []).length > 0 &&
-                                            `(${taskType_id?.length})`}
+                                        {(taskTypeId ?? []).length > 0 &&
+                                            `(${taskTypeId?.length})`}
                                         <ChevronDown className="ml-2 h-4 w-4"/>
                                     </Button>
                                 </DropdownMenuTrigger>
@@ -165,7 +165,7 @@ export default function FilterReqForm({
                                                 );
                                             }}
                                         >
-                                            {category.type_name.toLowerCase()}
+                                            {category.typeName.toLowerCase()}
                                         </DropdownMenuCheckboxItem>
                                     ))}
                                 </DropdownMenuContent>
@@ -176,7 +176,7 @@ export default function FilterReqForm({
                     {/* Priority Filter */}
                     <Controller
                         control={control}
-                        name="priority_id"
+                        name="priorityId"
                         render={({field}) => (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -186,8 +186,8 @@ export default function FilterReqForm({
                                     >
                                         <Filter className="mr-2 h-4 w-4"/>
                                         Ưu tiên{" "}
-                                        {(priority_id ?? []).length > 0 &&
-                                            `(${priority_id?.length})`}
+                                        {(priorityId ?? []).length > 0 &&
+                                            `(${priorityId?.length})`}
                                         <ChevronDown className="ml-2 h-4 w-4"/>
                                     </Button>
                                 </DropdownMenuTrigger>
@@ -208,7 +208,7 @@ export default function FilterReqForm({
                                                 );
                                             }}
                                         >
-                                            <span>{priority.priority_name.toLowerCase()}</span>
+                                            <span>{priority.priorityName.toLowerCase()}</span>
                                         </DropdownMenuCheckboxItem>
                                     ))}
                                 </DropdownMenuContent>
@@ -236,12 +236,12 @@ export default function FilterReqForm({
                             <div className="flex w-64 flex-col gap-6 p-4">
                                 <div className="flex gap-4">
                                     <div className="flex flex-1 flex-col gap-3">
-                                        <Label htmlFor="time_request_start" className="px-1">
+                                        <Label htmlFor="timeRequestStart" className="px-1">
                                             Từ ngày
                                         </Label>
                                         <Controller
                                             control={control}
-                                            name="time_request_start"
+                                            name="timeRequestStart"
                                             render={({field}) => (
                                                 <Popover
                                                     open={openTimeReqStart}
@@ -250,7 +250,7 @@ export default function FilterReqForm({
                                                     <PopoverTrigger asChild>
                                                         <Button
                                                             variant="outline"
-                                                            id="time_request_start"
+                                                            id="timeRequestStart"
                                                             className="w-full justify-between font-normal"
                                                         >
                                                             {field.value
@@ -269,10 +269,10 @@ export default function FilterReqForm({
                                                             selected={field.value}
                                                             captionLayout="dropdown"
                                                             disabled={
-                                                                getValues("time_request_end")
+                                                                getValues("timeRequestEnd")
                                                                     ? {
                                                                         after: new Date(
-                                                                            getValues("time_request_end") ?? Date()
+                                                                            getValues("timeRequestEnd") ?? Date()
                                                                         ),
                                                                     }
                                                                     : false
@@ -295,7 +295,7 @@ export default function FilterReqForm({
                                         </Label>
                                         <Controller
                                             control={control}
-                                            name="time_request_end"
+                                            name="timeRequestEnd"
                                             render={({field}) => (
                                                 <Popover
                                                     open={openTimeReqEnd}
@@ -322,10 +322,10 @@ export default function FilterReqForm({
                                                             selected={field.value}
                                                             captionLayout="dropdown"
                                                             disabled={
-                                                                getValues("time_request_start")
+                                                                getValues("timeRequestStart")
                                                                     ? {
                                                                         before: new Date(
-                                                                            getValues("time_request_start") ??
+                                                                            getValues("timeRequestStart") ??
                                                                             Date()
                                                                         ),
                                                                     }
@@ -342,14 +342,14 @@ export default function FilterReqForm({
                                         />
                                     </div>
                                 </div>
-                                {(time_request_start || time_request_end) && (
+                                {(timeRequestStart || timeRequestEnd) && (
                                     <Button
                                         variant="outline"
                                         size="sm"
                                         type="button"
                                         onClick={() => {
-                                            setValue("time_request_start", undefined);
-                                            setValue("time_request_end", undefined);
+                                            setValue("timeRequestStart", undefined);
+                                            setValue("timeRequestEnd", undefined);
                                             // Đóng popover cha để force re-render
                                             setOpenDateReqPopover(false);
                                         }}
@@ -382,12 +382,12 @@ export default function FilterReqForm({
                             <div className="flex w-64 flex-col gap-6 p-4">
                                 <div className="flex gap-4">
                                     <div className="flex flex-1 flex-col gap-3">
-                                        <Label htmlFor="time_approved_start" className="px-1">
+                                        <Label htmlFor="timeApprovedStart" className="px-1">
                                             Từ ngày
                                         </Label>
                                         <Controller
                                             control={control}
-                                            name="time_approved_start"
+                                            name="timeApprovedStart"
                                             render={({field}) => (
                                                 <Popover
                                                     open={openTimeApStart}
@@ -396,7 +396,7 @@ export default function FilterReqForm({
                                                     <PopoverTrigger asChild>
                                                         <Button
                                                             variant="outline"
-                                                            id="time_approved_start"
+                                                            id="timeApprovedStart"
                                                             className="w-full justify-between font-normal"
                                                         >
                                                             {field.value
@@ -415,10 +415,10 @@ export default function FilterReqForm({
                                                             selected={field.value}
                                                             captionLayout="dropdown"
                                                             disabled={
-                                                                getValues("time_approved_end")
+                                                                getValues("timeApprovedEnd")
                                                                     ? {
                                                                         after: new Date(
-                                                                            getValues("time_approved_end") ?? Date()
+                                                                            getValues("timeApprovedEnd") ?? Date()
                                                                         ),
                                                                     }
                                                                     : false
@@ -436,12 +436,12 @@ export default function FilterReqForm({
                                 </div>
                                 <div className="flex gap-4">
                                     <div className="flex flex-1 flex-col gap-3">
-                                        <Label htmlFor="time_approved_end" className="px-1">
+                                        <Label htmlFor="timeApprovedEnd" className="px-1">
                                             Đến ngày
                                         </Label>
                                         <Controller
                                             control={control}
-                                            name="time_approved_end"
+                                            name="timeApprovedEnd"
                                             render={({field}) => (
                                                 <Popover
                                                     open={openTimeApEnd}
@@ -450,7 +450,7 @@ export default function FilterReqForm({
                                                     <PopoverTrigger asChild>
                                                         <Button
                                                             variant="outline"
-                                                            id="time_approved_end"
+                                                            id="timeApprovedEnd"
                                                             className="w-full justify-between font-normal"
                                                         >
                                                             {field.value
@@ -468,10 +468,10 @@ export default function FilterReqForm({
                                                             selected={field.value}
                                                             captionLayout="dropdown"
                                                             disabled={
-                                                                getValues("time_approved_start")
+                                                                getValues("timeApprovedStart")
                                                                     ? {
                                                                         before: new Date(
-                                                                            getValues("time_approved_start") ??
+                                                                            getValues("timeApprovedStart") ??
                                                                             Date()
                                                                         ),
                                                                     }
@@ -488,14 +488,14 @@ export default function FilterReqForm({
                                         />
                                     </div>
                                 </div>
-                                {(time_approved_start || time_approved_end) && (
+                                {(timeApprovedStart || timeApprovedEnd) && (
                                     <Button
                                         variant="outline"
                                         size="sm"
                                         type="button"
                                         onClick={() => {
-                                            setValue("time_approved_start", undefined);
-                                            setValue("time_approved_end", undefined);
+                                            setValue("timeApprovedStart", undefined);
+                                            setValue("timeApprovedEnd", undefined);
                                             setOpenDateApPopover(false);
                                         }}
                                         className="w-full text-slate-600 hover:text-slate-900"
@@ -552,24 +552,24 @@ export default function FilterReqForm({
                     />
 
                     {/* Reset Filters */}
-                    {((taskType_id ?? []).length > 0 ||
-                        (priority_id ?? []).length > 0 ||
-                        time_approved_start ||
-                        time_approved_end ||
-                        time_request_start ||
-                        time_approved_end ||
+                    {((taskTypeId ?? []).length > 0 ||
+                        (priorityId ?? []).length > 0 ||
+                        timeApprovedStart ||
+                        timeApprovedEnd ||
+                        timeRequestStart ||
+                        timeRequestEnd ||
                         order) && (
                         <Button
                             variant="ghost"
                             type="button"
                             size="sm"
                             onClick={() => {
-                                setValue("taskType_id", []);
-                                setValue("priority_id", []);
-                                setValue("time_approved_start", undefined);
-                                setValue("time_approved_end", undefined);
-                                setValue("time_request_start", undefined);
-                                setValue("time_request_end", undefined);
+                                setValue("taskTypeId", []);
+                                setValue("priorityId", []);
+                                setValue("timeApprovedStart", undefined);
+                                setValue("timeApprovedEnd", undefined);
+                                setValue("timeRequestStart", undefined);
+                                setValue("timeRequestEnd", undefined);
                                 setValue("order", "");
                             }}
                             className="text-slate-600 hover:text-slate-900"

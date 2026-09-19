@@ -61,10 +61,10 @@ export function TaskType() {
         try {
             const data = await getAllPriorityAPI()
 
-            const items = data.map(function (item: { id: string; priority_name: string }) {
+            const items = data.map(function (item: { id: string; priorityName: string }) {
                 return ({
                     value: item.id,
-                    label: item.priority_name,
+                    label: item.priorityName,
                 });
             });
             setListPriority(items);
@@ -76,10 +76,10 @@ export function TaskType() {
     const getAllWorkflow = async (complexId: string) => {
         try {
             const data = await getAllWfAPI(complexId)
-            const items = data.map(function (item: { id: string; workflow_name: string }) {
+            const items = data.map(function (item: { id: string; workflowName: string }) {
                 return ({
                     value: item.id,
-                    label: item.workflow_name,
+                    label: item.workflowName,
                 });
             });
             setListWf(items);

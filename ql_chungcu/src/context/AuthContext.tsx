@@ -74,14 +74,14 @@ export default function AuthProvider({children}: ComponentProps) {
         setLoading(true);
         try {
             const profile = await getProfile();
-            if (profile.org_id) {
-                const org = await findByIdAPI(profile.org_id);
+            if (profile.orgId) {
+                const org = await findByIdAPI(profile.orgId);
                 setOrgManage(org.id);
             }
-            const data = await findComplexByIdAPI(profile.user.complex_id);
-            setFinanceModel(data.financial_model);
+            const data = await findComplexByIdAPI(profile.user.complexId);
+            setFinanceModel(data.financialModel);
             setUser(profile);
-            setComplex(profile.user.complex_id);
+            setComplex(profile.user.complexId);
 
             // Load permissions from token
             const userPermissions = getPermissions();

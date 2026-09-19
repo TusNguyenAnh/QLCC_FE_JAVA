@@ -73,10 +73,10 @@ function BusinessProcess() {
         try {
             const data = await getAllRoleAPI(complexId)
 
-            const items = data.map(function (item: { id: string; role_name: string }) {
+            const items = data.map(function (item: { id: string; roleName: string }) {
                 return ({
                     value: item.id,
-                    label: item.role_name,
+                    label: item.roleName,
                 });
             });
             setListPosition(items);
@@ -88,6 +88,7 @@ function BusinessProcess() {
     const getAllWorkflow = async (complexId: string) => {
         try {
             const data = await getAllWfAPI(complexId)
+            console.log(data);
             setWorkflows(data);
         } catch (err) {
             console.log(err);

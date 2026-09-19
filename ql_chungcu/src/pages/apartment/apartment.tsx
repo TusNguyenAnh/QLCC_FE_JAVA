@@ -64,7 +64,7 @@ function Apartment() {
             const items = data.map(function (item: bdItemCheckbox) {
                 return ({
                     value: item.id,
-                    label: item.building_name,
+                    label: item.buildingName,
                 });
             });
             setBuildings(items);

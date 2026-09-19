@@ -53,13 +53,13 @@ export const ColumnsApt = ({handleUpdate, handleDelete}: ComponentProps): Column
     },
 
     {
-        accessorKey: 'apt_number',
+        accessorKey: 'aptNumber',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Số căn hộ"/>
         ),
 
         cell: ({row}) => (
-            <div>{row.getValue('apt_number')}</div>
+            <div>{row.getValue('aptNumber')}</div>
         ),
     },
     {
@@ -73,44 +73,44 @@ export const ColumnsApt = ({handleUpdate, handleDelete}: ComponentProps): Column
     },
 
     {
-        accessorKey: 'gross_area',
-        header: ({column}) => (
-            <DataTableColumnHeader column={column} title="Diện tích tim tường"/>
-        ),
-        cell: ({row}) => (
-            <div>{row.getValue('gross_area')}</div>
-        ),
-    },
-
-    {
-        accessorKey: 'carpet_area',
-        header: ({column}) => (
-            <DataTableColumnHeader column={column} title="Diện tích thông thủy"/>
-        ),
-        cell: ({row}) => (
-            <div>{row.getValue('carpet_area')}</div>
-        ),
-    },
-
-    {
-        accessorKey: 'apt_type',
+        accessorKey: 'aptType',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Loại căn hộ"/>
         ),
         cell: ({row}) => (
-            <div>{row.getValue('apt_type')}</div>
+            <div>{row.getValue('aptType')}</div>
+        ),
+    },
+    {
+        accessorKey: 'grossArea',
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title="Diện tích tim tường"/>
+        ),
+        cell: ({row}) => (
+            <div>{row.getValue('grossArea')}</div>
         ),
     },
 
     {
-        accessorKey: 'description',
+        accessorKey: 'carpetArea',
         header: ({column}) => (
-            <DataTableColumnHeader column={column} title="Mô tả"/>
+            <DataTableColumnHeader column={column} title="Diện tích thông thủy"/>
         ),
         cell: ({row}) => (
-            <div>{row.getValue('description')}</div>
+            <div>{row.getValue('carpetArea')}</div>
         ),
     },
+
+
+    // {
+    //     accessorKey: 'description',
+    //     header: ({column}) => (
+    //         <DataTableColumnHeader column={column} title="Mô tả"/>
+    //     ),
+    //     cell: ({row}) => (
+    //         <div>{row.getValue('description')}</div>
+    //     ),
+    // },
 
     {
         id: 'actions',

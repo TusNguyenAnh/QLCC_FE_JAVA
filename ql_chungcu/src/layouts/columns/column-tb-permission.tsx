@@ -30,12 +30,12 @@ export const ColumnsPermission = (): ColumnDef<psItem>[] => [
         ),
     },
     {
-        accessorKey: 'total_roles',
+        accessorKey: 'totalRoles',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Vai trò"/>
         ),
         cell: ({row}) => (
-            <div>{row.getValue('total_roles')}</div>
+            <div>{row.getValue('totalRoles')}</div>
         ),
     },
 ];

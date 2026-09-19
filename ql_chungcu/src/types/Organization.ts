@@ -1,26 +1,26 @@
 export type Org = {
     id: string;
-    org_code: string;
-    org_name: string;
+    orgCode: string;
+    orgName: string;
     description: string;
-    parent_org_id: string;
+    parentOrgId: string;
     status?: string;
-    child?: Org[];
-    building: string[];
+    children?: Org[];
+    buildingIds: string[];
 }
 
 export type fillItemOrg = {
     id: string;
-    org_code: string;
-    org_name: string;
+    orgCode: string;
+    orgName: string;
     description: string;
-    parent_org_id: string;
+    parentOrgId: string;
     building: string[];
 }
 
 export type orgWithoutChild = {
     id: string;
-    org_name: string;
+    orgName: string;
 }
 
 export type memberOrg = {

@@ -2,15 +2,15 @@ export interface Expense {
   id: string;
   title: string;
   category: string;
-  original_amount: string;
-  amount_paid: string;
+  originalAmount: string;
+  amountPaid: string;
   remaining: number;
   status: string;
   vendor: string;
   description: string;
-  created_by: string;
-  approved_by: string | null;
-  approved_at: string | null;
+  createdBy: string;
+  approvedBy: string | null;
+  approvedAt: string | null;
 }
 
 export interface ExpenseFilters {
@@ -18,13 +18,13 @@ export interface ExpenseFilters {
   page?: number;
   category?: string;
   status?: string;
-  proposed_from?: string;
-  proposed_to?: string;
+  proposedFrom?: string;
+  proposedTo?: string;
   approved?: number;
-  building_id?: string;
+  buildingId?: string;
 }
 
 export interface ExpenseSummary {
-  total_paid: number;
-  total_expect: number;
+  totalPaid: number;
+  totalExpect: number;
 }

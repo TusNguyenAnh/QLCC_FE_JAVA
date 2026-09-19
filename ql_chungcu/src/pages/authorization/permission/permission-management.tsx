@@ -9,6 +9,7 @@ import {columnLabelsPerm} from "@/utils/column-label.ts";
 import {getAllPermissionAPI} from "@/apis/permissAPI.ts";
 import type {psItem, psModule} from "@/types/Permission.ts";
 import {ColumnsPermission} from "@/layouts/columns/column-tb-permission.tsx";
+import {countPermissionByRoleAPI, countUserByRoleAPI} from "@/apis/roleAPI.ts";
 
 function PermissionManagement() {
     const [permissions, setPermissions] = useState<psModule[]>([])
@@ -27,10 +28,12 @@ function PermissionManagement() {
     const getAllPermission = async () => {
         try {
             const data = await getAllPermissionAPI()
+            const countRoleByPermission: Record<string, number> = await countPermissionByRoleAPI();
+
             const transformed: psModule[] = Object.entries(data).map(([key, value]) => ({
-                module_name: key,
-                permission: (value as psItem[]).map(({id, name, module, description, total_roles}) => ({
-                    id, name, module, description, total_roles})),
+                moduleName: key,
+                permission: (value as psItem[]).map(({id, name, module, description}) => ({
+                    id, name, module, description, totalRoles: countRoleByPermission[id] || 0})),
             }));
 
             setPermissions(transformed)
@@ -56,12 +59,12 @@ function PermissionManagement() {
             <div className="flex flex-wrap gap-2 py-6">
                 {permissions?.map((ps: psModule) => (
                     <Button
-                        key={ps.module_name}
-                        variant={moduleSelected?.module_name === ps.module_name ? "default" : "outline"}
+                        key={ps.moduleName}
+                        variant={moduleSelected?.moduleName === ps.moduleName ? "default" : "outline"}
                         size="sm"
                         onClick={() => handleSelectedModule(ps)}
                     >
-                        {ps.module_name}
+                        {ps.moduleName}
                     </Button>
                 ))}
             </div>

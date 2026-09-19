@@ -65,30 +65,30 @@ export function RequestList({
                   <div>
                     <div className="font-semibold">{request.fullname}</div>
                     <div className="text-sm text-muted-foreground">
-                      {request.building_name}
+                      {request.buildingName}
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="text-sm">{request.type_name}</div>
+                  <div className="text-sm">{request.typeName}</div>
                 </TableCell>
                 <TableCell>
                   <div className="text-sm">
-                    {formatDate(request.created_at)}
+                    {formatDate(request.createdAt)}
                   </div>
                 </TableCell>
                 <TableCell>
                   <Badge
                     variant="outline"
                     className={`border-slate-200 font-semibold ${
-                      PRIORITY_COLORS[request.priority_name]
+                      PRIORITY_COLORS[request.priorityName]
                     }`}
                   >
-                    {request.priority_name}
+                    {request.priorityName}
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <div className="text-sm">{request.phone_number}</div>
+                  <div className="text-sm">{request.phoneNumber}</div>
                 </TableCell>
                 <TableCell className="text-right">
                   <Button

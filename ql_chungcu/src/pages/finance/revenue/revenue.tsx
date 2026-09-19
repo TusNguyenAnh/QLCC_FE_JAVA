@@ -33,6 +33,7 @@ import RevenueForm, {
 } from "@/pages/finance/revenue/action-form-revenue.tsx";
 import { createTaskAPI } from "@/apis/taskAPI.ts";
 import FinanceModelWarning from "@/pages/finance/finance-model-warning.tsx";
+import { findByIdAPI } from "@/apis/orgAPI.ts";
 
 export default function Revenue() {
   const [revenues, setRevenues] = useState<Revenue[]>([]);
@@ -43,13 +44,14 @@ export default function Revenue() {
   const [creatingLedger, setCreatingLedger] = useState(false);
   const [ledgerDialogOpen, setLedgerDialogOpen] = useState(false);
   const [selectedRevenue, setSelectedRevenue] = useState<Revenue | null>(null);
+  const { orgManage } = useContext(AuthContext);
 
   // Pagination state
   const [meta, setMeta] = useState<PaginationMeta>({
-    current_page: 1,
-    last_page: 1,
-    per_page: 10,
-    total: 0,
+    page: 0,
+    totalPages: 1,
+    size: 10,
+    totalElements: 0,
   });
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
@@ -118,9 +120,14 @@ export default function Revenue() {
       }
 
       const response = await getRevenues(filters);
-      setRevenues(response.data);
-      setMeta(response.meta);
-      setSummary(response.summary);
+      setRevenues(response.result?.data || []);
+      setMeta(response.result || {
+        page: 0,
+        totalPages: 1,
+        size: pageSize,
+        totalElements: 0,
+      });
+      setSummary(response.summary || { total_paid: 0, total_expect: 0 });
     } catch (error) {
       console.error("Error fetching revenues:", error);
       toast.error("Không thể tải danh sách khoản thu");
@@ -137,7 +144,13 @@ export default function Revenue() {
   // Fetch buildings
   const fetchBuildings = async () => {
     try {
-      const data = await getAllBdAPI();
+      let data = await getAllBdAPI();
+      if (orgManage) {
+        // Lọc toà nhà theo orgManage
+        const bdByOrg = await findByIdAPI(orgManage);
+        data = data.filter((item) => bdByOrg.building.includes(item.id));
+      }
+
       setBuildings(data);
 
       const items = [

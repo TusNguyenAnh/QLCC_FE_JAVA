@@ -1,38 +1,30 @@
 import request from "@/utils/request.ts";
-import type {BdFormSchema} from "@/pages/building/action-form-bd.tsx";
 
 import type {FilterResFormSchema} from "@/pages/resident/filter-form-res.tsx";
 
 export const getResByFilterAPI = async (filterRes: FilterResFormSchema) => {
     // Trả về toàn bộ response với message, data, meta, links
-    const res = await request.post(`/resident/getByFilter`, filterRes);
-
-    return res.data;
+    return await request.post(`/resident/filter`, filterRes);
 };
 
 export const findByOrgId = async (orgId: string) => {
-    const res = await request.get(`/resident/findByOrgId/${orgId}`);
-    return res.data;
+    return await request.get(`/resident/findByOrgId/${orgId}`);
 };
 
-export const findByBuildingIdAPI = async (buildingId: string[],orgId:string) => {
-    const res = await request.post("/resident/findByBuildingId", {
-        building_id: buildingId,
-        org_id: orgId,
-    });
-    return res.data;
+export const findByBuildingIdAPI = async (buildingId: string[], orgId: string) => {
+    return await request.post(`/resident/findByBuildingId/${orgId}`, buildingId);
 };
 
 export const addResInOrgAPI = async (userId: string[], org_id: string) => {
     const res = await request.post(`/resident/addResInOrg/${org_id}`, {
-        user_id: userId,
+        userIds: userId,
     });
     return res.data;
 };
 
 export const removeResInOrgAPI = async (userId: string[], org_id: string) => {
     const res = await request.post(`/resident/removeResInOrg/${org_id}`, {
-        user_id: userId,
+        userIds: userId,
     });
     return res.data;
 };
@@ -61,21 +53,6 @@ export const createAptResUseFileAPI = async (formData: FormData) => {
         headers: {
             "Content-Type": "multipart/form-data",
         },
-    });
-    return res.data;
-};
-
-export const updateBdAPI = async (updateBd: BdFormSchema, bdId: string) => {
-    const res = await request.post(`/bd/update/${bdId}`, updateBd);
-    return res.data;
-};
-
-export const updateResPositionAPI = async (
-    residentId: string,
-    position: string
-) => {
-    const res = await request.post(`/resident/updatePosition/${residentId}`, {
-        position,
     });
     return res.data;
 };
