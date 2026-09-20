@@ -25,10 +25,10 @@ jobs:
       - name: Build frontend image
         run: |
           cd ql_chungcu 
-          docker build -t ghcr.io/${{ secrets.REPOSITORY_OWNER }}/qlcc-fe:${{ github.sha }} .
+          docker build -t ghcr.io/${{ secrets.REPOSITORY_OWNER }}/qlcc-fe-java:${{ github.sha }} .
 
       - name: Push frontend image
-        run: docker push ghcr.io/${{ secrets.REPOSITORY_OWNER }}/qlcc-fe:${{ github.sha }}
+        run: docker push ghcr.io/${{ secrets.REPOSITORY_OWNER }}/qlcc-fe-java:${{ github.sha }}
 
       - name: Deploy frontend to VPS
         uses: appleboy/ssh-action@master
@@ -38,15 +38,16 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            cd /home/atus/qlcc_php/deploy
-            OLD_IMAGE=$(docker inspect qlcc_fe --format='{{.Config.Image}}' 2>/dev/null || true)
+            cd /home/atus/qlcc_java/deploy
+            OLD_IMAGE=$(docker inspect qlcc_fe-java --format='{{.Config.Image}}' 2>/dev/null || true)
             echo "Old image: $OLD_IMAGE"
 
-            docker stop qlcc_fe || true
-            docker rm qlcc_fe || true
-            FRONTEND_TAG=${{ github.sha }} docker compose -f docker-compose-qlcc-php.yml pull qlcc-frontend
-            FRONTEND_TAG=${{ github.sha }} docker compose -f docker-compose-qlcc-php.yml up -d qlcc-frontend
-            docker compose -f docker-compose-qlcc-php.yml restart nginx
+            docker stop qlcc_fe-java || true
+            docker rm qlcc_fe-java || true
+            
+            FRONTEND_TAG=${{ github.sha }} docker compose -f docker-compose-qlcc-java.yml pull qlcc-frontend
+            FRONTEND_TAG=${{ github.sha }} docker compose -f docker-compose-qlcc-java.yml up -d qlcc-frontend
+            docker compose -f docker-compose-qlcc-java.yml restart nginx
             if [ -n "$OLD_IMAGE" ]; then docker image rm "$OLD_IMAGE" || true; fi
             docker ps
 
