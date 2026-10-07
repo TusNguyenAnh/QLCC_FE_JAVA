@@ -53,13 +53,13 @@ export const ColumnsTt = ({handleUpdate, handleDelete}: ComponentProps): ColumnD
     },
 
     {
-        accessorKey: 'typename',
+        accessorKey: 'typeName',
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Loại yêu cầu"/>
         ),
 
         cell: ({row}) => (
-            <div>{row.getValue('typename')}</div>
+            <div>{row.getValue('typeName')}</div>
         ),
     },
 

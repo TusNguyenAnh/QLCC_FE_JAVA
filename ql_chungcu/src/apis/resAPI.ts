@@ -40,19 +40,17 @@ export const updatePositionAPI = async (userId: string, orgId: string, position:
 };
 
 export const createResUseFileAPI = async (formData: FormData) => {
-    const res = await request.post("/resident/import-excel", formData, {
+    return await request.post("/resident/import-excel", formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
     });
-    return res.data;
 };
 
 export const createAptResUseFileAPI = async (formData: FormData) => {
-    const res = await request.post("/resident/import-excelAptRes", formData, {
+    return await request.post("/resident/import-excelAptRes", formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
     });
-    return res.data;
 };

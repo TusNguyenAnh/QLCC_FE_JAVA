@@ -30,7 +30,7 @@ const schema = z.object({
   orgName: z.string().min(1, "Tên đơn vị không được để trống"),
   description: z.string().optional(),
   parentOrgId: z.string().optional(),
-  building: z.array(z.string()).optional(),
+  buildingIds: z.array(z.string()).optional(),
 });
 
 export type OrgFormSchema = z.infer<typeof schema>;
@@ -69,7 +69,7 @@ export default function OrgForm({
       orgName: formData?.orgName || "",
       description: formData?.description || "",
       parentOrgId: formData?.parentOrgId || "",
-      building: [] as string[],
+      buildingIds: [] as string[],
     },
   });
 
@@ -83,7 +83,7 @@ export default function OrgForm({
         orgName: formData.orgName || "",
         description: formData.description || "",
         parentOrgId: formData.parentOrgId || "",
-        building: formData.building || [],
+        buildingIds: formData.buildingIds || [],
       });
 
       // Chỉ gọi API khi parentOrgId có giá trị
@@ -92,7 +92,7 @@ export default function OrgForm({
           complex,
           formData.parentOrgId,
           itemsAllBd,
-          formData.building
+          formData.buildingIds
         );
       } else {
         // Reset danh sách tòa nhà khi không có parentOrgId (trường hợp CREATE)
@@ -109,7 +109,7 @@ export default function OrgForm({
         orgName: "",
         description: "",
         parentOrgId: "",
-        building: [],
+        buildingIds: [],
       });
       setItemsBd([]);
     }
@@ -227,7 +227,7 @@ export default function OrgForm({
                             complex,
                             value,
                             itemsAllBd,
-                            formData.building
+                            formData.buildingIds
                           );
                         } else {
                           setItemsBd([]); // Reset danh sách tòa nhà khi không chọn đơn vị cha
@@ -248,7 +248,7 @@ export default function OrgForm({
                     <Controller
                       key={itemBd.id}
                       control={control}
-                      name="building"
+                      name="buildingIds"
                       render={({ field }) => {
                         const checked = !!field.value?.includes(itemBd.id);
                         return (

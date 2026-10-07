@@ -54,16 +54,17 @@ export function RoleManagement() {
             const data = await getAllRoleAPI(complexId)
             const countUserByRole: Record<string, number> = await countUserByRoleAPI();
 
+
             const result = data.map(role => ({
                 id: role.id,
                 roleName: role.roleName,
                 description: role.description,
                 complexId: role.complexId,
-                permission: role.rolePermission.flatMap(
-                    item => item.permissionDataMapper[0].id
+                permission: role.rolePermissions.flatMap(
+                    item => item.permission[0].id
                 ),
                 totalUser: countUserByRole[role.id] || 0,
-                totalPermission: role.rolePermission.length || 0,
+                totalPermission: role.rolePermissions.length || 0,
             }));
             console.log(result)
             setRoles(result)

@@ -17,7 +17,7 @@ import {toast, Toaster} from "sonner";
 import {Loader2} from "lucide-react";
 import {getProfile, login} from "@/apis/authAPI.ts";
 import {useNavigate} from "react-router-dom";
-import {findByIdAPI, getAllOrgWithoutChildAPI} from "@/apis/orgAPI.ts";
+import {getAllOrgWithoutChildAPI} from "@/apis/orgAPI.ts";
 import {getPermissions, setToken} from "@/utils/auth.ts";
 import {AuthContext} from "@/context/AuthContext.tsx";
 import {Combobox} from "@/components/ui/combobox.tsx";

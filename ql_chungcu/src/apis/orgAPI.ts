@@ -7,8 +7,7 @@ export const getAllOrgAPI = async () => {
 }
 
 export const findByIdAPI = async (orgId: string) => {
-    const res = await request.get(`/organizations/${orgId}`);
-    return res.data;
+    return await request.get(`/organizations/${orgId}`);
 }
 
 export const getBdIdByOrgIdAPI = async (parentId: string) => {

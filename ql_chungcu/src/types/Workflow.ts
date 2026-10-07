@@ -15,10 +15,11 @@ export type WorkflowStep = {
     orgLevel: number;
     stepOrder: number;
     description: string;
+    moduleCode: string;
     status?: number;
     workflowId: string;
     workflowStepApprovers: {
-        roleDataMapper: {
+        role: {
             id: string,
             complexId: string,
             roleName: string,

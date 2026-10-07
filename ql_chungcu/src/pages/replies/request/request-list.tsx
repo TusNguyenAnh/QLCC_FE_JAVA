@@ -63,7 +63,7 @@ export function RequestList({
               >
                 <TableCell className="font-medium">
                   <div>
-                    <div className="font-semibold">{request.fullname}</div>
+                    <div className="font-semibold">{request.fullName}</div>
                     <div className="text-sm text-muted-foreground">
                       {request.buildingName}
                     </div>

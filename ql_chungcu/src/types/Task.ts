@@ -1,8 +1,8 @@
 export type Task = {
     id: string;
     complexId: string;
-    tasktypeId: string;
-    currentStepId: string;
+    taskTypeId: string;
+    currentStep: number;
     currentOrgId: string;
     userId: string;
     taskName: string;
@@ -14,7 +14,7 @@ export type Task = {
     priorityName: string;
     username: string;
     phoneNumber: string;
-    fullname: string;
+    fullName: string;
     aptNumber: string;
     level: number;
     buildingName: string;
@@ -33,14 +33,17 @@ export type TaskWorkflow = {
     workflowName: string;
     roleName: string;
     fullname: string;
+    moduleCode: string;
+
 };
 
 export type ActionSummary = {
     action: string;
-    count: number;
+    total: number;
 };
 
 export type TaskReview = {
     action: string;
     comment: string;
+    stepOrder:number;
 };

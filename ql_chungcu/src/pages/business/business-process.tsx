@@ -88,7 +88,6 @@ function BusinessProcess() {
     const getAllWorkflow = async (complexId: string) => {
         try {
             const data = await getAllWfAPI(complexId)
-            console.log(data);
             setWorkflows(data);
         } catch (err) {
             console.log(err);

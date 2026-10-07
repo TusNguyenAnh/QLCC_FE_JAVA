@@ -28,7 +28,7 @@ export const columnLabelsApt: Record<string, string> = {
 export const columnLabelsRes: Record<string, string> = {
     relationship: "Quan hệ",
     cccd: "Số căn cước",
-    fullname: "Cư dân",
+    fullname: "Họ tên",
     email: "Email",
     phoneNumber: "Số điện thoại",
     birthday: "Ngày sinh",

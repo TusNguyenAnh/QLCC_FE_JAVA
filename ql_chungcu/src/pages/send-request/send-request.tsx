@@ -97,28 +97,28 @@ export function SendRequest() {
 
             if (taskStatus === "PENDING") {
                 setPendingMeta({
-                    page: response.result.page,
-                    totalPages: response.result.totalPages,
-                    size: response.result.size,
-                    totalElements: response.result.totalElements,
+                    page: response.page,
+                    totalPages: response.totalPages,
+                    size: response.size,
+                    totalElements: response.totalElements,
                 });
-                setListTaskPending(response.result.data);
+                setListTaskPending(response.data);
             } else if (taskStatus === "REJECTED") {
                 setRejectedMeta({
-                    page: response.result.page,
-                    totalPages: response.result.totalPages,
-                    size: response.result.size,
-                    totalElements: response.result.totalElements,
+                    page: response.page,
+                    totalPages: response.totalPages,
+                    size: response.size,
+                    totalElements: response.totalElements,
                 });
-                setListTaskRejected(response.result.data);
+                setListTaskRejected(response.data);
             } else if (taskStatus === "APPROVED") {
                 setApprovedMeta({
-                    page: response.result.page,
-                    totalPages: response.result.totalPages,
-                    size: response.result.size,
-                    totalElements: response.result.totalElements,
+                    page: response.page,
+                    totalPages: response.totalPages,
+                    size: response.size,
+                    totalElements: response.totalElements,
                 });
-                setListTaskApproved(response.result.data);
+                setListTaskApproved(response.data);
             }
             setSelectedRequest(null);
         } catch (err) {
@@ -167,7 +167,7 @@ export function SendRequest() {
 
     const getMediaFile = async ($ownerId: string) => {
         try {
-            const data = await getMediaFileAPI($ownerId);
+            const data = await getMediaFileAPI([$ownerId]);
             setMediaFiles(data);
         } catch (err) {
             console.log(err);
@@ -236,7 +236,6 @@ export function SendRequest() {
     };
 
     const handleApprovedFilter = (filter: FilterReqFormSchema) => {
-        console.log(filter);
         setApprovedFilter(filter);
         setApprovedPage(1);
         getAllTaskByCreator("APPROVED", filter, 1, approvedPerPage);
@@ -247,8 +246,8 @@ export function SendRequest() {
         try {
             // Tạo FormData để gửi files
             const formData = new FormData();
-            formData.append("task_name", data.taskName);
-            formData.append("tasktype_id", data.tasktypeId || "");
+            formData.append("taskName", data.taskName);
+            formData.append("tasktypeId", data.tasktypeId || "");
             formData.append("description", data.description || "");
             formData.append("category", "task");
 

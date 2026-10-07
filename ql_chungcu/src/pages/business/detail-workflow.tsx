@@ -76,7 +76,7 @@ function DetailWorkflow({selectedWorkflow}: ComponentProps) {
                                                     <span>{level.workflowStepApprovers.length}</span>
                                                 </div>
                                                 <div>Cần: {level.workflowStepApprovers.map((pos: {
-                                                    roleDataMapper: {
+                                                    role: {
                                                         id: string,
                                                         complexId: string,
                                                         roleName: string,
@@ -84,9 +84,9 @@ function DetailWorkflow({selectedWorkflow}: ComponentProps) {
                                                     }
                                                 }, index) => {
                                                     if (index == level.workflowStepApprovers.length - 1) {
-                                                        return pos.roleDataMapper.roleName + " ";
+                                                        return pos.role.roleName + " ";
                                                     }
-                                                    return pos.roleDataMapper.roleName + ", ";
+                                                    return pos.role.roleName + ", ";
                                                 })}phê duyệt
                                                 </div>
                                             </div>

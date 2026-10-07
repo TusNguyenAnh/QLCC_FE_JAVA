@@ -71,7 +71,7 @@ export const ColumnsRes = ({cusItem}: ComponentProps): ColumnDef<Resident>[] => 
     {
         accessorKey: 'fullname',
         header: ({column}) => (
-            <DataTableColumnHeader column={column} title="Cư dân"/>
+            <DataTableColumnHeader column={column} title="Họ tên"/>
         ),
         cell: ({row}) => (
             <div>{row.getValue('fullname')}</div>

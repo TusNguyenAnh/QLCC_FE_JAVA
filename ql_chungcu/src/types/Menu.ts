@@ -100,7 +100,7 @@ export const menuItems: MenuItem[] = [
         url: "/page/send_request",
         icon: Send,
         child: [],
-        permissions: ["view:complex"],
+        permissions: ["view:task"],
     },
     {
         id: 12,

@@ -100,7 +100,6 @@ export default function AuthProvider({children}: ComponentProps) {
         } else {
             setLoading(false); // Không có token thì set loading = false
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); //  Chỉ chạy 1 lần khi mount
 
     // Memoize context value để tránh re-render không cần thiết

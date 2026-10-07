@@ -1,5 +1,5 @@
 import request from "@/utils/request.ts";
-import type {TaskReview, Task} from "@/types/Task.ts";
+import type {Task, TaskReview} from "@/types/Task.ts";
 import type {FilterReqFormSchema} from "@/pages/replies/request/filter-form-request.tsx";
 import type {PaginatedResponse} from "@/types/Pagination.ts";
 import type {ExpenseFormSchema} from "@/pages/finance/expense/action-form-expense.tsx";
@@ -49,12 +49,10 @@ export const getTaskByCreatorAPI = async (
 };
 
 export const getWfByTaskAPI = async (taskId: string) => {
-    const res = await request.get(`/task/workflow/${taskId}`);
-    return res.data;
+    return await request.get(`/task/workflow/${taskId}`);
 };
 export const taskActionSummaryAPI = async () => {
-    const res = await request.get("/task/task-summary");
-    return res.data;
+    return await request.get("/task/task-summary");
 };
 
 export const approveTaskAPI = async (

@@ -47,9 +47,6 @@ export function SendReqDetail({
                             <h2 className="text-xl font-bold text-foreground mb-2">
                                 {request.taskName}
                             </h2>
-                            <p className="text-sm text-muted-foreground">
-                                Mã yêu cầu: {request.id}
-                            </p>
                         </div>
                     </DialogHeader>
                     <DialogDescription></DialogDescription>
@@ -78,7 +75,7 @@ export function SendReqDetail({
                                     <User className="h-4 w-4 text-muted-foreground"/>
                                     <div>
                                         <p className="text-sm text-muted-foreground">Người gửi</p>
-                                        <p className="font-medium">{request.fullname}</p>
+                                        <p className="font-medium">{request.fullName}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">

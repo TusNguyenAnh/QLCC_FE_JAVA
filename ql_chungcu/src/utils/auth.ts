@@ -47,6 +47,15 @@ export const getPermissions = (): string[] => {
 };
 
 
+export const getSubject = (): string => {
+    const token = getToken();
+    if (!token) return "";
+
+    const decoded = decodeToken(token);
+    return decoded?.sub || "";
+};
+
+
 //Kiểm tra user có 1 permission cụ thể không
 export const hasPermission = (permission: string): boolean => {
     const scope = getPermissions();
@@ -79,3 +88,4 @@ export const isTokenExpired = (): boolean => {
 
     return decoded.exp * 1000 < Date.now();
 };
+
