@@ -96,8 +96,9 @@ export function InspectionRecord({
                             </div>
                         </div>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            {selectedStepOrder != 999 ?
-                                "Bước xét duyệt thứ" + {selectedStepOrder} + "trong tiến trình" : ""
+                            {selectedStepOrder != 999
+                                ? `Bước xét duyệt thứ ${selectedStepOrder} trong tiến trình`
+                                : ""
                             }
                         </p>
                     </div>
