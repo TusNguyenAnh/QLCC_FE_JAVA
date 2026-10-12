@@ -23,6 +23,9 @@ import type {PaginationMeta} from "@/types/Pagination.ts";
 import type {listMediaFile} from "@/types/MediaFile.ts";
 import {getMediaFileAPI} from "@/apis/mediaFileAPI.ts";
 import {STATUS} from "@/utils/reply-constant.ts";
+import CreateExpenseModal from "@/pages/finance/expense/create-expense-modal.tsx";
+import {getAllBdAPI} from "@/apis/bdAPI.ts";
+import type {Building} from "@/types/Building.ts";
 
 function Reply() {
     const [selectedRequest, setSelectedRequest] = useState<Task | null>(null);
@@ -34,6 +37,13 @@ function Reply() {
     const [loading, setLoading] = useState(false);
     const [openReqDetail, setOpenReqDetail] = useState(false);
     const [mediaFiles, setMediaFiles] = useState<listMediaFile | null>(null);
+
+    // State cho modal Lập khoản chi (mở từ tab Yêu cầu đã xét duyệt)
+    const [createExpenseOpen, setCreateExpenseOpen] = useState(false);
+    const [expenseTaskId, setExpenseTaskId] = useState<string | undefined>(undefined);
+    const [buildings, setBuildings] = useState<Building[]>([]);
+
+    const { complex } = useContext(AuthContext);
 
     // Key để reset filter form khi chuyển tab
     const [pendingFilterKey, setPendingFilterKey] = useState(0);
@@ -74,6 +84,16 @@ function Reply() {
     const [approvedFilter, setApprovedFilter] = useState<FilterReqFormSchema>({});
 
     const {orgManage} = useContext(AuthContext);
+
+    // Load danh sách tòa nhà (dùng cho modal Lập khoản chi)
+    useEffect(() => {
+        getAllBdAPI().then((data: Building[]) => setBuildings(data ?? []));
+    }, []);
+
+    const openCreateExpense = (task: Task) => {
+        setExpenseTaskId(task.id);
+        setCreateExpenseOpen(true);
+    };
 
     const getWorkflowForTask = async ($taskId: string) => {
         try {
@@ -415,6 +435,7 @@ function Reply() {
                             onSelectRequest={onSelectTask}
                             loading={loading}
                             type={"apd"}
+                            onCreateExpense={openCreateExpense}
                         />
                         {approvedMeta && approvedMeta.totalPages > 0 && (
                             <DataPagination
@@ -433,6 +454,15 @@ function Reply() {
                             />
                         ) : null}
                     </TabsContent>
+
+                    {/* Modal Lập khoản chi – hiển thị khi chọn task đã duyệt */}
+                    <CreateExpenseModal
+                        open={createExpenseOpen}
+                        onOpenChange={setCreateExpenseOpen}
+                        buildings={buildings}
+                        complexId={complex ? String(complex) : ""}
+                        prefillTaskId={expenseTaskId}
+                    />
 
                     <TabsContent value="task_type" className="flex-1 p-6">
                         <TaskType/>

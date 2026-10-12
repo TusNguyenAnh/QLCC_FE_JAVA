@@ -1,7 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge.tsx";
-import { Loader2 } from "lucide-react";
+import { FilePlus, Loader2 } from "lucide-react";
 import type { Task } from "@/types/Task.ts";
 import { formatDate, PRIORITY_COLORS } from "@/utils/reply-constant.ts";
 import { Button } from "@/components/ui/button.tsx";
@@ -19,12 +19,15 @@ interface RequestListProps {
   onSelectRequest: (request: Task) => void;
   loading?: boolean;
   type?: string;
+  onCreateExpense?: (task: Task) => void;
 }
 
 export function RequestList({
   requests,
   onSelectRequest,
   loading,
+  type,
+  onCreateExpense,
 }: RequestListProps) {
   if (!Array.isArray(requests) || requests.length === 0) {
     return (
@@ -91,13 +94,28 @@ export function RequestList({
                   <div className="text-sm">{request.phoneNumber}</div>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onSelectRequest(request)}
-                  >
-                    Chi tiết
-                  </Button>
+                  <div className="flex items-center justify-end gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onSelectRequest(request)}
+                    >
+                      Chi tiết
+                    </Button>
+                    {type === "apd" && onCreateExpense && (
+                      <Button
+                        size="sm"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onCreateExpense(request);
+                        }}
+                      >
+                        <FilePlus className="h-4 w-4 mr-1" />
+                        Lập khoản chi
+                      </Button>
+                    )}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

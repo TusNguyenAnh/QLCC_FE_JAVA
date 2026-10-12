@@ -148,7 +148,7 @@ export default function Revenue() {
       if (orgManage) {
         // Lọc toà nhà theo orgManage
         const bdByOrg = await findByIdAPI(orgManage);
-        data = data.filter((item) => bdByOrg.building.includes(item.id));
+        data = data.filter((item) => bdByOrg.buildingIds.includes(item.id));
       }
 
       setBuildings(data);

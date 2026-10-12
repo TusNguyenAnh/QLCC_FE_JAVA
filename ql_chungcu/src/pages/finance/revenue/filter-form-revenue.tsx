@@ -114,7 +114,7 @@ export function FilterRevenueForm({
                               key={building.id}
                               value={String(building.id)}
                             >
-                              {building.building_name}
+                              {building.buildingName}
                             </SelectItem>
                           ))}
                         </SelectContent>
