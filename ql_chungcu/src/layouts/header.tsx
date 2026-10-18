@@ -54,6 +54,7 @@ export default function Header() {
         cash: 'Sổ quỹ tiền mặt',
         model: 'Mô hình tài chính',
         send_request: 'Gửi yêu cầu, phản ánh',
+        brief: 'Quản lý hồ sơ',
     };
 
     // Hàm tạo mảng breadcrumb từ URL

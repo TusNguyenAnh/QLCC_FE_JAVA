@@ -37,20 +37,20 @@ export const menuItems: MenuItem[] = [
         // Không cần permissions = ai cũng vào được
     },
     {
+        id: 24,
+        title: "Quản lý hồ sơ",
+        url: "/page/brief",
+        icon: FileText,
+        child: [],
+        permissions: ["view:building"],
+    },
+    {
         id: 2,
         title: "Quản lý cơ cấu tổ chức",
         url: "/page/org",
         icon: Network,
         child: [],
         permissions: ["view:organization"],
-    },
-    {
-        id: 3,
-        title: "Quản lý quy trình",
-        url: "/page/bsn",
-        icon: Workflow,
-        child: [],
-        permissions: ["view:workflow"],
     },
     {
         id: 8,
@@ -85,6 +85,14 @@ export const menuItems: MenuItem[] = [
         ],
         // Hiển thị menu cha nếu có ít nhất 1 quyền con
         permissions: ["view:apartment", "view:resident"],
+    },
+    {
+        id: 3,
+        title: "Quản lý quy trình",
+        url: "/page/bsn",
+        icon: Workflow,
+        child: [],
+        permissions: ["view:workflow"],
     },
     {
         id: 10,

@@ -22,6 +22,7 @@ import UserManagement from "@/pages/authorization/user/user-management.tsx";
 import FinanceModel from "@/pages/finance/model/finance-model.tsx";
 import {SendRequest} from "@/pages/send-request/send-request.tsx";
 import Deposit from "@/pages/deposit/deposit.tsx";
+import Brief from "@/pages/brief/brief.tsx";
 
 const AppRouter: React.FC = () => (
     <Routes>
@@ -34,6 +35,19 @@ const AppRouter: React.FC = () => (
             element={
                 <ProtectedRoute>
                     <MainLayout content={null}></MainLayout>
+                </ProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/page/brief"
+            element={
+                <ProtectedRoute
+                    permissions={["view:organization", "manage:organization"]}
+                    requireAll={true}
+
+                >
+                    <MainLayout content={<Brief/>}/>
                 </ProtectedRoute>
             }
         />
