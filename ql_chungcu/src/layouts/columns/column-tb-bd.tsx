@@ -17,13 +17,13 @@ import type {Building, fillItemBd} from "@/types/Building.ts";
 interface ComponentProps {
     handleUpdate: (org: fillItemBd) => void
     handleDelete: (listBd: string[]) => void
+    handleView: (org: fillItemBd) => void
 
 }
 
 //Cột là nơi bạn xác định cốt lõi của bảng trông như thế nào. Chúng xác định dữ liệu sẽ được hiển thị, cách định dạng, sắp xếp và lọc dữ liệu.
-export const ColumnsBd = ({handleUpdate, handleDelete}: ComponentProps): ColumnDef<Building>[] => [
+export const ColumnsBd = ({handleUpdate, handleDelete,handleView}: ComponentProps): ColumnDef<Building>[] => [
     {
-
         id: "select_all",
         header: ({table}) => {
             return (
@@ -92,6 +92,11 @@ export const ColumnsBd = ({handleUpdate, handleDelete}: ComponentProps): ColumnD
                             onClick={() => handleUpdate(bdItemUpdate)}
                         >
                             Sửa
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => handleView(bdItemUpdate)}
+                        >
+                            Hồ sơ kỹ thuật
                         </DropdownMenuItem>
                         <DropdownMenuSeparator/>
                         <DropdownMenuItem

@@ -23,6 +23,7 @@ import type {fillItemBd} from "@/types/Building.ts";
 const schema = z.object({
     buildingName: z.string().min(1, "Tên tòa nhà không được để trống"),
     complexId: z.string().optional(),
+    files: z.any().optional(),
 })
 
 export type BdFormSchema = z.infer<typeof schema>
@@ -46,6 +47,7 @@ export default function BdForm({open, setOpen, loading, action, formData, onSubm
         resolver: zodResolver(schema),
         defaultValues: {
             buildingName: formData?.buildingName || "",
+            files: undefined,
         },
     })
 
@@ -54,6 +56,7 @@ export default function BdForm({open, setOpen, loading, action, formData, onSubm
             reset({
                 buildingName: formData?.buildingName || "",
                 complexId: formData?.complexId || "",
+                files: undefined,
             })
         }
     }, [formData, reset])
@@ -88,10 +91,29 @@ export default function BdForm({open, setOpen, loading, action, formData, onSubm
                             <div className="grid gap-3">
                                 <Label htmlFor="buildingName">Tên tòa nhà</Label>
                                 <Input id="buildingName" {...register("buildingName", {
-                                    setValueAs: (value) => value?.trim()})} />
+                                    setValueAs: (value) => value?.trim()
+                                })} />
                                 {errors.buildingName &&
                                     <p className="text-sm text-red-500">{errors.buildingName.message}</p>}
                             </div>
+                            {action === "CREATE" && (
+                                <div className="grid gap-3">
+                                    <Label htmlFor="files">Tệp đính kèm</Label>
+                                    <Input
+                                        id="files"
+                                        type="file"
+                                        multiple
+                                        {...register("files")}
+                                        className="cursor-pointer"
+                                        accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"
+                                    />
+                                    {errors.files && (
+                                        <p className="text-sm text-red-500">
+                                            {errors.files.message as string}
+                                        </p>
+                                    )}
+                                </div>)
+                            }
                         </div>
                     </div>
 

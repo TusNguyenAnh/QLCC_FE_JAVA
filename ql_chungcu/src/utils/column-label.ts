@@ -1,4 +1,3 @@
-// anh xa id sang ten cu the
 export const columnLabelsOrg: Record<string, string> = {
     orgCode: "Mã đơn vị",
     orgName: "Tên đơn vị",

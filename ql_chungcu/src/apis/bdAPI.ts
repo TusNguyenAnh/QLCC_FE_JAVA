@@ -5,8 +5,8 @@ export const getAllBdAPI = async () => {
     return await request.get(`/building`);
 }
 
-export const createBdAPI = async (newBd: BdFormSchema) => {
-    const res = await request.post('/building', newBd);
+export const createBdAPI = async (formData: FormData) => {
+    const res = await request.post('/building', formData);
     return res.data;
 }
 
