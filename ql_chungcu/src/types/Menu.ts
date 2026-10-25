@@ -9,7 +9,7 @@ import {
     Network, Send,
     Settings, Shield, UserCog,
     UserRoundCog, Users, Wallet,
-    Workflow,
+    Workflow, Wrench,
 } from "lucide-react";
 
 export interface MenuItem {
@@ -57,6 +57,14 @@ export const menuItems: MenuItem[] = [
         title: "Quản lý tòa nhà",
         url: "/page/bd",
         icon: Building2,
+        child: [],
+        permissions: ["view:building"],
+    },
+    {
+        id: 25,
+        title: "Quản lý thiết bị",
+        url: "/page/equipment",
+        icon: Wrench,
         child: [],
         permissions: ["view:building"],
     },

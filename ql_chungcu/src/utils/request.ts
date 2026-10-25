@@ -120,6 +120,10 @@ export function handleAxiosStatusCode(error: unknown) {
                 // Hiển thị trang 404
                 break;
 
+            case 409:
+                toast.error("Conflig: " + data.message);
+                break;
+
             case 500:
                 toast.error("Server Error: " + data.message);
                 // Báo lỗi hệ thống

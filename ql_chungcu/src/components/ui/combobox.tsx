@@ -27,10 +27,12 @@ type ComboboxItem = {
 type ComboboxProps = {
     items: ComboboxItem[];
     onChange: (value: string) => void;
+    onValueChange?: (value: string) => void;
     itemUpdate: string; // id cua item update
 };
 
-export function Combobox({items, onChange, itemUpdate}: ComboboxProps) {
+
+export function Combobox({items, onChange, onValueChange, itemUpdate}: ComboboxProps) {
     const [openCommandList, setOpenCommandList] = useState(false);
     const [value, setValue] = useState(""); // gia tri phan tu duoc chon trong combobox
 
@@ -60,7 +62,9 @@ export function Combobox({items, onChange, itemUpdate}: ComboboxProps) {
                 }}
             >
                 <Command>
-                    <CommandInput className="min-w-1/2" placeholder="Search item..."/>
+                    <CommandInput className="min-w-1/2" placeholder="Search item..."
+                                  onValueChange={onValueChange}
+                    />
                     <CommandList>
                         <CommandEmpty>No item found.</CommandEmpty>
                         <CommandGroup className="max-h-60 overflow-y-auto">

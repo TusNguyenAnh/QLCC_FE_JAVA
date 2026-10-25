@@ -32,6 +32,7 @@ export interface ExpenseCreateRequest {
   totalAmount: number;          // > 0
   description?: string;         // tối đa 1000 ký tự
   payDate: string;              // ISO-8601: "2026-03-15T09:00:00Z"
+  equipmentId: string;          // UUID thiết bị liên quan (bắt buộc)
   expenseDetails: ExpenseDetailRequest[]; // bắt buộc cả cum lẫn toa
 }
 

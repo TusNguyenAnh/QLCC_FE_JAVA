@@ -55,6 +55,7 @@ export default function Header() {
         model: 'Mô hình tài chính',
         send_request: 'Gửi yêu cầu, phản ánh',
         brief: 'Quản lý hồ sơ',
+        equipment: 'Quản lý thiết bị',
     };
 
     // Hàm tạo mảng breadcrumb từ URL

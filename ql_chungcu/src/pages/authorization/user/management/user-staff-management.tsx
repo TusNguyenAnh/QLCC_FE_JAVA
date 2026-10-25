@@ -130,7 +130,7 @@ function UserStaffManagement() {
 
     const getRoleByUser = async (userId: string) => {
         try {
-            const data = await getRoleByUserAPI(userId, orgSelected.id);
+            const data = await getRoleByUserAPI(userId, orgSelected);
             setRoleOfUser(data);
         } catch (err) {
             console.log(err);

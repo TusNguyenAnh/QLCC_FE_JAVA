@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, AlertCircle } from "lucide-react";
-import { toast } from "sonner";
-import { createExpenseAPI, computeAllocation } from "@/apis/expenseAPI.ts";
+import {useEffect, useState, useCallback} from "react";
+import {useForm, Controller} from "react-hook-form";
+import {z} from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Loader2, AlertCircle} from "lucide-react";
+import {toast} from "sonner";
+import {createExpenseAPI, computeAllocation} from "@/apis/expenseAPI.ts";
+import {searchEquipmentAPI} from "@/apis/equipmentAPI.ts";
+import type {EquipmentResponse} from "@/types/Equipment.ts";
 import type {
-    ExpenseCategory,
     ExpenseCreateRequest,
     ExpenseDetailRequest,
-    ExpenseType,
+
 } from "@/types/Expense.ts";
-import type { Building } from "@/types/Building.ts";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import type {Building} from "@/types/Building.ts";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
 import {
     Dialog,
     DialogContent,
@@ -30,10 +31,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import {Combobox} from "@/components/ui/combobox.tsx";
 
-// --------------------------------------------------
-// Helpers
-// --------------------------------------------------
 
 const VND = new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -52,17 +51,15 @@ function parseNumberInput(raw: string): number {
     return parseInt(raw.replace(/[^\d]/g, "")) || 0;
 }
 
-// --------------------------------------------------
-// Schema
-// --------------------------------------------------
 
 const schema = z.object({
     taskId: z.string().optional(),
     type: z.enum(["cum", "toa"] as const),
     category: z.enum(["BAO_DUONG", "SUA_CHUA"] as const, {
-        errorMap: () => ({ message: "Vui lòng chọn hạng mục" }),
+        errorMap: () => ({message: "Vui lòng chọn hạng mục"}),
     }),
-    totalAmount: z.number({ invalid_type_error: "Số tiền không hợp lệ" }).positive("Số tiền phải lớn hơn 0"),
+    equipmentId: z.string({required_error: "Vui lòng chọn thiết bị"}).min(1, "Vui lòng chọn thiết bị"),
+    totalAmount: z.number({invalid_type_error: "Số tiền không hợp lệ"}).positive("Số tiền phải lớn hơn 0"),
     payDate: z.string().min(1, "Vui lòng chọn ngày thanh toán"),
     description: z.string().max(1000, "Tối đa 1000 ký tự").optional(),
     /** Chỉ dùng khi type = 'toa' */
@@ -71,19 +68,11 @@ const schema = z.object({
 
 export type CreateExpenseFormValues = z.infer<typeof schema>;
 
-// --------------------------------------------------
-// Types nội bộ
-// --------------------------------------------------
-
 interface AllocationRow {
     buildingId: string;
     buildingName: string;
     amount: number;
 }
-
-// --------------------------------------------------
-// Props
-// --------------------------------------------------
 
 interface CreateExpenseModalProps {
     open: boolean;
@@ -95,20 +84,23 @@ interface CreateExpenseModalProps {
     onSuccess?: () => void;
 }
 
-// --------------------------------------------------
-// Component
-// --------------------------------------------------
 
 export default function CreateExpenseModal({
-    open,
-    onOpenChange,
-    buildings,
-    complexId,
-    prefillTaskId,
-    onSuccess,
-}: CreateExpenseModalProps) {
+                                               open,
+                                               onOpenChange,
+                                               buildings,
+                                               prefillTaskId,
+                                               onSuccess,
+                                           }: CreateExpenseModalProps) {
     const [submitting, setSubmitting] = useState(false);
     const [allocations, setAllocations] = useState<AllocationRow[]>([]);
+
+    // State phục vụ tìm kiếm & chọn thiết bị
+    // const [equipmentOpen, setEquipmentOpen] = useState(false);
+    const [equipmentSearch, setEquipmentSearch] = useState("");
+    const [equipments, setEquipments] = useState<{ value: string, label: string }[]>([]);
+    const [loadingEquipment, setLoadingEquipment] = useState(false);
+    const [selectedEquipment, setSelectedEquipment] = useState<EquipmentResponse | null>(null);
 
     const {
         register,
@@ -117,13 +109,14 @@ export default function CreateExpenseModal({
         watch,
         setValue,
         reset,
-        formState: { errors },
+        formState: {errors},
     } = useForm<CreateExpenseFormValues>({
         resolver: zodResolver(schema),
         defaultValues: {
             taskId: prefillTaskId ?? "",
             type: "cum",
             category: undefined,
+            equipmentId: "",
             totalAmount: 0,
             payDate: "",
             description: "",
@@ -146,14 +139,57 @@ export default function CreateExpenseModal({
                 taskId: prefillTaskId ?? "",
                 type: "cum",
                 category: undefined,
+                equipmentId: "",
                 totalAmount: 0,
                 payDate: "",
                 description: "",
                 singleBuildingId: "",
             });
             setAllocations([]);
+            // setEquipmentOpen(false);
+            setEquipmentSearch("");
+            setSelectedEquipment(null);
         }
     }, [open]);
+
+    // Hàm gọi API tìm kiếm thiết bị
+    const searchEquipment = useCallback(async (keyword: string) => {
+        setLoadingEquipment(true);
+        try {
+            const res = await searchEquipmentAPI({
+                keyword: keyword.trim() || undefined,
+                page: 0,
+                size: 10,
+            });
+            const items = res.data.map((item) => {
+                return ({
+                    value: item.id,
+                    label: item.equipmentName,
+                });
+            });
+
+            setEquipments(items);
+        } catch {
+            setEquipments([]);
+        } finally {
+            setLoadingEquipment(false);
+        }
+    }, []);
+
+    // Load danh sách thiết bị ban đầu khi mở dropdown
+    useEffect(() => {
+        if (equipments.length === 0) {
+            searchEquipment("");
+        }
+    }, []);
+
+    // Debounce 350ms khi gõ tìm kiếm thiết bị
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            searchEquipment(equipmentSearch);
+        }, 350);
+        return () => clearTimeout(timer);
+    }, [equipmentSearch, searchEquipment]);
 
     // Tính phân bổ tự động khi đổi type = 'cum' hoặc totalAmount thay đổi
     useEffect(() => {
@@ -182,13 +218,10 @@ export default function CreateExpenseModal({
     const updateAllocationAmount = (buildingId: string, rawValue: string) => {
         const num = parseNumberInput(rawValue);
         setAllocations((prev) =>
-            prev.map((r) => (r.buildingId === buildingId ? { ...r, amount: num } : r))
+            prev.map((r) => (r.buildingId === buildingId ? {...r, amount: num} : r))
         );
     };
 
-    // --------------------------------------------------
-    // Submit
-    // --------------------------------------------------
     const onSubmit = async (data: CreateExpenseFormValues) => {
         // Validate phân bổ
         if (data.type === "cum" && !isAllocationValid) {
@@ -233,6 +266,7 @@ export default function CreateExpenseModal({
             totalAmount: data.totalAmount,
             payDate: isoPayDate,
             description: data.description,
+            equipmentId: data.equipmentId,
             expenseDetails,
         };
 
@@ -249,9 +283,6 @@ export default function CreateExpenseModal({
         }
     };
 
-    // --------------------------------------------------
-    // Render
-    // --------------------------------------------------
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
@@ -276,7 +307,7 @@ export default function CreateExpenseModal({
                         <Controller
                             control={control}
                             name="type"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <div className="flex gap-3">
                                     {(["cum", "toa"] as const).map((t) => (
                                         <label
@@ -302,29 +333,58 @@ export default function CreateExpenseModal({
                         />
                     </div>
 
-                    {/* Hạng mục */}
-                    <div className="space-y-1">
-                        <Label className="text-xs font-medium">
-                            Hạng mục <span className="text-red-500">*</span>
-                        </Label>
-                        <Controller
-                            control={control}
-                            name="category"
-                            render={({ field }) => (
-                                <Select onValueChange={field.onChange} value={field.value}>
-                                    <SelectTrigger className="h-8 text-xs">
-                                        <SelectValue placeholder="Chọn hạng mục" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="BAO_DUONG">Chi bảo trì, bảo dưỡng</SelectItem>
-                                        <SelectItem value="SUA_CHUA">Chi thay thế, sửa chữa</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                    {/* Hạng mục & Thiết bị liên quan trên cùng 1 hàng */}
+                    <div className="flex gap-4">
+                        {/* Hạng mục */}
+                        <div className="space-y-1">
+                            <Label className="text-xs font-medium">
+                                Hạng mục <span className="text-red-500">*</span>
+                            </Label>
+                            <Controller
+                                control={control}
+                                name="category"
+                                render={({field}) => (
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <SelectTrigger className="h-9 text-xs">
+                                            <SelectValue placeholder="Chọn hạng mục"/>
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="BAO_DUONG">Chi bảo trì, bảo dưỡng</SelectItem>
+                                            <SelectItem value="SUA_CHUA">Chi thay thế, sửa chữa</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
+                            {errors.category && (
+                                <p className="text-xs text-red-500">{errors.category.message}</p>
                             )}
-                        />
-                        {errors.category && (
-                            <p className="text-xs text-red-500">{errors.category.message}</p>
-                        )}
+                        </div>
+
+                        {/* Thiết bị liên quan (bắt buộc) */}
+                        <div className="space-y-1">
+                            <div className="">
+                                <Label className="mb-0.5 text-[12px]" htmlFor="equipmentId">Thiết bị <span
+                                    className="text-red-500">*</span></Label>
+                                <Controller
+                                    control={control}
+                                    name="equipmentId"
+                                    render={({field}) => (
+                                        <Combobox
+                                            items={equipments}
+                                            onValueChange={value => {
+                                                setEquipmentSearch(value)
+                                            }
+                                            }
+                                            onChange={(value) => {
+                                                field.onChange(value);
+                                            }} itemUpdate={""}/>
+                                    )}
+                                />
+                            </div>
+                            {errors.equipmentId && (
+                                <p className="text-xs text-red-500">{errors.equipmentId.message}</p>
+                            )}
+                        </div>
                     </div>
 
                     {/* Tổng số tiền */}
@@ -335,7 +395,7 @@ export default function CreateExpenseModal({
                         <Controller
                             control={control}
                             name="totalAmount"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <Input
                                     id="totalAmount"
                                     className="h-8 text-sm"
@@ -393,10 +453,10 @@ export default function CreateExpenseModal({
                             <Controller
                                 control={control}
                                 name="singleBuildingId"
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <Select onValueChange={field.onChange} value={field.value}>
                                         <SelectTrigger className="h-8 text-xs">
-                                            <SelectValue placeholder="Chọn tòa nhà" />
+                                            <SelectValue placeholder="Chọn tòa nhà"/>
                                         </SelectTrigger>
                                         <SelectContent>
                                             {buildings.map((b) => (
@@ -428,9 +488,10 @@ export default function CreateExpenseModal({
                             {/* Cảnh báo không khớp */}
                             {!isAllocationValid && (
                                 <div className="flex items-start gap-2 p-2 bg-red-50 border border-red-200 rounded-md">
-                                    <AlertCircle className="h-3.5 w-3.5 text-red-500 mt-0.5 flex-shrink-0" />
+                                    <AlertCircle className="h-3.5 w-3.5 text-red-500 mt-0.5 flex-shrink-0"/>
                                     <p className="text-xs text-red-600">
-                                        Tổng tiền phân bổ ({VND.format(allocationTotal)}) chưa khớp với tổng chi ({VND.format(watchedTotalAmount)}).
+                                        Tổng tiền phân bổ ({VND.format(allocationTotal)}) chưa khớp với tổng chi
+                                        ({VND.format(watchedTotalAmount)}).
                                         Vui lòng điều chỉnh trước khi lưu.
                                     </p>
                                 </div>
@@ -439,32 +500,32 @@ export default function CreateExpenseModal({
                             <div className="border rounded-md overflow-hidden">
                                 <table className="w-full text-xs">
                                     <thead className="bg-gray-50 border-b">
-                                        <tr>
-                                            <th className="px-3 py-2 text-left font-medium text-gray-500 uppercase">
-                                                Tòa nhà
-                                            </th>
-                                            <th className="px-3 py-2 text-right font-medium text-gray-500 uppercase">
-                                                Số tiền (VNĐ)
-                                            </th>
-                                        </tr>
+                                    <tr>
+                                        <th className="px-3 py-2 text-left font-medium text-gray-500 uppercase">
+                                            Tòa nhà
+                                        </th>
+                                        <th className="px-3 py-2 text-right font-medium text-gray-500 uppercase">
+                                            Số tiền (VNĐ)
+                                        </th>
+                                    </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-100">
-                                        {allocations.map((row) => (
-                                            <tr key={row.buildingId} className="bg-white">
-                                                <td className="px-3 py-1.5 text-gray-700">
-                                                    {row.buildingName}
-                                                </td>
-                                                <td className="px-3 py-1.5 text-right">
-                                                    <Input
-                                                        className="h-7 text-xs text-right w-36 ml-auto"
-                                                        value={formatNumberInput(row.amount)}
-                                                        onChange={(e) =>
-                                                            updateAllocationAmount(row.buildingId, e.target.value)
-                                                        }
-                                                    />
-                                                </td>
-                                            </tr>
-                                        ))}
+                                    {allocations.map((row) => (
+                                        <tr key={row.buildingId} className="bg-white">
+                                            <td className="px-3 py-1.5 text-gray-700">
+                                                {row.buildingName}
+                                            </td>
+                                            <td className="px-3 py-1.5 text-right">
+                                                <Input
+                                                    className="h-7 text-xs text-right w-36 ml-auto"
+                                                    value={formatNumberInput(row.amount)}
+                                                    onChange={(e) =>
+                                                        updateAllocationAmount(row.buildingId, e.target.value)
+                                                    }
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))}
                                     </tbody>
                                 </table>
                             </div>
@@ -486,7 +547,7 @@ export default function CreateExpenseModal({
                             size="sm"
                             disabled={submitting || (watchedType === "cum" && !isAllocationValid && allocations.length > 0)}
                         >
-                            {submitting && <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />}
+                            {submitting && <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5"/>}
                             Lưu khoản chi
                         </Button>
                     </DialogFooter>
